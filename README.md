@@ -1,12 +1,76 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏫 Aplikasi Catatan Mengajar Guru - UKK RPL 2026
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📱 Live Demo
+🔗 [https://fadhilna.github.io/ukk-rpl-catatan-mengajar-2026] *(jika ada hosting)*  
+👨‍💻 **Username:** `admin` | **Password:** `admin123`  
+👨‍🏫 **Username:** `guru` | **Password:** `guru123`
 
+## 🎯 Deskripsi Proyek
+Aplikasi web untuk mencatat kegiatan mengajar guru dengan sistem role-based (Admin & Guru). Dibuat untuk UKK RPL 2026.
+
+## 🚀 Fitur Utama
+### 👨‍💼 **Admin Panel**
+- ✅ Dashboard dengan statistik
+- ✅ Manajemen Data Guru
+- ✅ Manajemen Data Kelas  
+- ✅ Manajemen Data Siswa
+- ✅ Manajemen Jadwal Mengajar
+- ✅ Log Aktivitas Sistem
+
+### 👨‍🏫 **Guru Panel**
+- ✅ Dashboard jadwal harian
+- ✅ Input Kegiatan Mengajar
+- ✅ History Kegiatan
+- ✅ Lihat Semua Jadwal
+- ✅ Profil Guru
+
+## 🛠 Teknologi Stack
+| Layer | Technology |
+|-------|------------|
+| **Backend** | Laravel 10, PHP 8, MySQL |
+| **Frontend** | Bootstrap 5.3, Blade Templates |
+| **Auth** | Session-based Authentication |
+| **Database** | MySQL, DB::table() Queries |
+| **Deployment** | Local Server / XAMPP |
+
+## 📸 Screenshot
+| Dashboard Admin | Input Kegiatan Guru |
+|----------------|---------------------|
+| ![Admin Dashboard](screenshots/admin-dashboard.png) | ![Guru Input](screenshots/guru-input.png) |
+
+## 📦 Instalasi & Setup
+```bash
+# 1. Clone repository
+git clone https://github.com/fadhilna/ukk-rpl-catatan-mengajar-2026.git
+
+# 2. Masuk ke folder project
+cd ukk-rpl-catatan-mengajar-2026
+
+# 3. Install dependencies
+composer install
+
+# 4. Copy environment file
+cp .env.example .env
+
+# 5. Generate key
+php artisan key:generate
+
+# 6. Setup database di .env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=catatan_mengajar
+DB_USERNAME=root
+DB_PASSWORD=
+
+# 7. Migrate database
+php artisan migrate
+
+# 8. Seed data contoh (atau akses /seed-data di browser)
+php artisan db:seed
+
+# 9. Jalankan server
+php artisan serve
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
