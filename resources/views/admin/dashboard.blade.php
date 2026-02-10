@@ -1,52 +1,53 @@
 @extends('layouts.admin')
 
 @section('title', 'Dashboard Admin')
- <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+
 @section('content')
 <!-- NAVBAR DENGAN MENU -->
 <nav class="navbar navbar-glow navbar-expand-lg shadow">
     <div class="container-fluid px-4">
-       <a class="navbar-brand fw-bold text-white" href="/admin">
-    <img src="{{ asset('image-removebg-preview.png') }}" 
-         alt="Logo SMK" 
-         style="width: 35px; height: 35px; margin-right: 10px;">
-    <span class="d-none d-md-inline">UKK RPL Admin</span>
-</a>
-        
+        <a class="navbar-brand fw-bold text-white" href="/admin">
+            <img src="{{ asset('image-removebg-preview.png') }}" alt="Logo SMK" style="width: 35px; height: 35px; margin-right: 10px;">
+            <span class="d-none d-md-inline">UKK RPL Admin</span>
+        </a>
+
+        <!-- Search Bar -->
+        <div class="search-bar mx-4 d-none d-lg-flex">
+            <div class="input-group search-group">
+                <span class="input-group-text bg-transparent border-0">
+                    <i class="bi bi-search text-white"></i>
+                </span>
+                <input type="text" class="form-control search-input" placeholder="Search Here...">
+            </div>
+        </div>
+
         <!-- Menu untuk desktop -->
-        <div class="d-none d-lg-flex ms-4">
+        <div class="d-none d-lg-flex ms-auto">
             <div class="navbar-nav">
-                <a class="nav-link text-white mx-2 {{ request()->is('admin') ? 'active' : '' }}" 
-                   href="/admin">
+                <a class="nav-link text-white mx-2 {{ request()->is('admin') ? 'active' : '' }}" href="/admin">
                     <i class="bi bi-speedometer2 me-1"></i> Dashboard
                 </a>
-                <a class="nav-link text-white mx-2 {{ request()->is('admin/guru*') ? 'active' : '' }}" 
-                   href="/admin/guru">
+                <a class="nav-link text-white mx-2 {{ request()->is('admin/guru*') ? 'active' : '' }}" href="/admin/guru">
                     <i class="bi bi-people me-1"></i> Guru
                 </a>
-                <a class="nav-link text-white mx-2 {{ request()->is('admin/kelas*') ? 'active' : '' }}" 
-                   href="/admin/kelas">
+                <a class="nav-link text-white mx-2 {{ request()->is('admin/kelas*') ? 'active' : '' }}" href="/admin/kelas">
                     <i class="bi bi-building me-1"></i> Kelas
                 </a>
-                <a class="nav-link text-white mx-2 {{ request()->is('admin/jadwal*') ? 'active' : '' }}" 
-                   href="/admin/jadwal">
+                <a class="nav-link text-white mx-2 {{ request()->is('admin/jadwal*') ? 'active' : '' }}" href="/admin/jadwal">
                     <i class="bi bi-calendar-week me-1"></i> Jadwal
                 </a>
-                <!-- MENU DATA SISWA -->
-                <a class="nav-link text-white mx-2 {{ request()->is('admin/siswa*') ? 'active' : '' }}" 
-                   href="/admin/siswa">
+                <a class="nav-link text-white mx-2 {{ request()->is('admin/siswa*') ? 'active' : '' }}" href="/admin/siswa">
                     <i class="bi bi-people-fill me-1"></i> Siswa
                 </a>
             </div>
         </div>
-        
-        <!-- Search & Profil -->
-        <div class="d-flex align-items-center">
-            <!-- Profil -->
+
+        <!-- Profil -->
+        <div class="d-flex align-items-center ms-3">
             <div class="dropdown">
-                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" 
-                   data-bs-toggle="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
                     <div class="me-2">
                         <div class="profile-img bg-light d-flex align-items-center justify-content-center">
                             <i class="bi bi-person-fill text-primary"></i>
@@ -64,7 +65,6 @@
                         </a>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                   <!-- Di dropdown menu profil -->
                     <li>
                         <a class="dropdown-item logout-animated" href="/logout" id="dropdownLogoutBtn">
                             <i class="bi bi-box-arrow-right me-2"></i>Logout
@@ -76,452 +76,793 @@
     </div>
 </nav>
 
-<!-- Header Dashboard -->
-<div class="container-fluid px-4 pt-4">
-   <!-- Welcome Section - UBAH INI -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card card-hover text-white animate__animated animate__fadeIn" 
-             style="background: linear-gradient(135deg, #4361ee, #3a0ca3); border: none;">
-            <div class="card-body py-4">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <!-- Welcome Message yang lebih besar dan jelas -->
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="bg-white bg-opacity-20 rounded-circle p-3 me-3">
-                                <i class="bi bi-hand-wave fs-2"></i>
-                            </div>
-                            <div>
-                                <h1 class="fw-bold mb-1" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">
-                                    Halo, {{ session('username') ?? 'Admin' }}! 👋
-                                </h1>
-                                <p class="mb-0 opacity-90" style="font-size: 1.1rem;">
-                                    Selamat datang di <strong>Sistem Manajemen Catatan Mengajar Guru</strong><br>
-                                    <small class="opacity-75">UKK RPL 2026 - Siap untuk Ujian Kompetensi Keahlian</small>
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <!-- Quick Stats Mini -->
-                        <div class="d-flex flex-wrap gap-3 mt-4">
-                            <div class="bg-white bg-opacity-15 rounded-pill px-3 py-1">
-                                <small>
-                                    <i class="bi bi-calendar-check me-1"></i>
-                                    {{ date('d F Y') }}
-                                </small>
-                            </div>
-                            <div class="bg-white bg-opacity-15 rounded-pill px-3 py-1">
-                                <small>
-                                    <i class="bi bi-clock me-1"></i>
-                                    <span id="liveWelcomeTime">{{ date('H:i') }}</span> WIB
-                                </small>
-                            </div>
-                            <div class="bg-white bg-opacity-15 rounded-pill px-3 py-1">
-                                <small>
-                                    <i class="bi bi-shield-check me-1"></i>
-                                    Status: <strong class="text-success">Online</strong>
-                                </small>
-                            </div>
-                        </div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Menu -->
+        <div class="col-lg-2 col-md-3 sidebar-menu p-0">
+            <div class="sidebar-content">
+                <div class="user-info p-4">
+                    <div class="profile-img-lg bg-light d-flex align-items-center justify-content-center mx-auto mb-3">
+                        <i class="bi bi-person-fill text-primary fs-3"></i>
                     </div>
-                    <div class="col-md-4 text-end d-none d-md-block">
-                        <div class="position-relative">
-                            <div class="bg-white bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
-                                <i class="bi bi-laptop fs-1"></i>
-                            </div>
-                            <div class="mt-3">
-                                <div class="bg-white bg-opacity-20 rounded p-2 d-inline-block">
-                                    <small class="d-block opacity-90">
-                                        <i class="bi bi-activity me-1"></i>
-                                        Sistem Aktif
-                                    </small>
-                                    <small class="opacity-75">
-                                        Versi 1.0.0 | UKK RPL
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <h5 class="text-center mb-1">{{ session('username') ?? 'Anne Williams' }}</h5>
+                    <p class="text-center text-muted small mb-0">Administrator</p>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-    <!-- Stats Cards -->
-    <div class="row g-4 mb-4">
-        <!-- Guru -->
-        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-            <div class="stats-card animate__animated animate__fadeInUp">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-muted mb-1">Total Guru</h6>
-                        <h2 class="fw-bold mb-0 text-primary">{{ $stats['total_guru'] }}</h2>
-                        <small class="text-success">
-                            <i class="bi bi-arrow-up"></i> Aktif
-                        </small>
-                    </div>
-                    <div class="bg-primary bg-opacity-10 rounded-circle p-3">
-                        <i class="bi bi-people-fill text-primary fs-4"></i>
-                    </div>
-                </div>
-                <a href="/admin/guru" class="stretched-link"></a>
-            </div>
-        </div>
-        
-        <!-- Kelas -->
-        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-            <div class="stats-card animate__animated animate__fadeInUp animate__delay-1s">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-muted mb-1">Total Kelas</h6>
-                        <h2 class="fw-bold mb-0 text-success">{{ $stats['total_kelas'] }}</h2>
-                        <small class="text-info">
-                            <i class="bi bi-building"></i> Ruang
-                        </small>
-                    </div>
-                    <div class="bg-success bg-opacity-10 rounded-circle p-3">
-                        <i class="bi bi-building text-success fs-4"></i>
-                    </div>
-                </div>
-                <a href="/admin/kelas" class="stretched-link"></a>
-            </div>
-        </div>
-        
-        <!-- Siswa -->
-        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-            <div class="stats-card animate__animated animate__fadeInUp animate__delay-2s">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-muted mb-1">Total Siswa</h6>
-                        <h2 class="fw-bold mb-0 text-warning">{{ $stats['total_siswa'] }}</h2>
-                        <small class="text-muted">
-                            <i class="bi bi-person"></i> Peserta didik
-                        </small>
-                    </div>
-                    <div class="bg-warning bg-opacity-10 rounded-circle p-3">
-                        <i class="bi bi-person-badge text-warning fs-4"></i>
-                    </div>
-                </div>
-                <a href="/admin/siswa" class="stretched-link"></a>
-            </div>
-        </div>
-        
-        <!-- Jadwal -->
-        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-            <div class="stats-card animate__animated animate__fadeInUp animate__delay-3s">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-muted mb-1">Total Jadwal</h6>
-                        <h2 class="fw-bold mb-0 text-info">{{ $stats['total_jadwal'] }}</h2>
-                        <small class="text-primary">
-                            <i class="bi bi-calendar"></i> Mengajar
-                        </small>
-                    </div>
-                    <div class="bg-info bg-opacity-10 rounded-circle p-3">
-                        <i class="bi bi-calendar-week text-info fs-4"></i>
-                    </div>
-                </div>
-                <a href="/admin/jadwal" class="stretched-link"></a>
-            </div>
-        </div>
-        
-        <!-- Kegiatan -->
-        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-            <div class="stats-card animate__animated animate__fadeInUp animate__delay-4s">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-muted mb-1">Kegiatan</h6>
-                        <h2 class="fw-bold mb-0 text-danger">{{ $stats['total_kegiatan'] }}</h2>
-                        <small class="text-warning">
-                            <i class="bi bi-check-circle"></i> Tercatat
-                        </small>
-                    </div>
-                    <div class="bg-danger bg-opacity-10 rounded-circle p-3">
-                        <i class="bi bi-journal-text text-danger fs-4"></i>
-                    </div>
-                </div>
-                <a href="/admin/laporan-kegiatan" class="stretched-link"></a>
-            </div>
-        </div>
-        
-        <!-- Pengguna -->
-        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6">
-            <div class="stats-card animate__animated animate__fadeInUp animate__delay-5s">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-muted mb-1">Pengguna</h6>
-                        <h2 class="fw-bold mb-0 text-secondary">{{ $stats['total_pengguna'] }}</h2>
-                        <small class="text-success">
-                            <i class="bi bi-shield-check"></i> Terdaftar
-                        </small>
-                    </div>
-                    <div class="bg-secondary bg-opacity-10 rounded-circle p-3">
-                        <i class="bi bi-person text-secondary fs-4"></i>
-                    </div>
-                </div>
-                <a href="/guru/kegiatan" class="stretched-link"></a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="row g-4">
-        <!-- Quick Actions & System Info -->
-        <div class="col-lg-8">
-            <!-- Quick Actions -->
-            <div class="row">
-                <div class="col-12 mb-4">
-                    <div class="card card-hover shadow-sm">
-                        <div class="card-header bg-transparent border-0 pb-0">
-                            <h5 class="card-title mb-0">
-                                <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
-                                Aksi Cepat
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-md-3 col-6">
-                                    <a href="/admin/guru" class="btn btn-primary w-100 py-3 h-100">
-                                        <div class="text-center">
-                                            <i class="bi bi-people-fill fs-2 mb-2"></i>
-                                            <div class="fw-semibold">Kelola Guru</div>
-                                            <small class="opacity-75">{{ $stats['total_guru'] }} data</small>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <a href="/admin/kelas" class="btn btn-success w-100 py-3 h-100">
-                                        <div class="text-center">
-                                            <i class="bi bi-building fs-2 mb-2"></i>
-                                            <div class="fw-semibold">Kelola Kelas</div>
-                                            <small class="opacity-75">{{ $stats['total_kelas'] }} data</small>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <a href="/admin/jadwal" class="btn btn-info w-100 py-3 h-100">
-                                        <div class="text-center">
-                                            <i class="bi bi-calendar-week fs-2 mb-2"></i>
-                                            <div class="fw-semibold">Kelola Jadwal</div>
-                                            <small class="opacity-75">{{ $stats['total_jadwal'] }} data</small>
-                                        </div>
-                                    </a>
-                                </div>
-                               <!-- Modifikasi kode Quick Actions - Ganti hanya tombol logout -->
-                                <div class="col-md-3 col-6">
-                                    <a href="/logout" class="btn btn-danger w-100 py-3 h-100 btn-logout-animated LogoutButton" 
-                                    id="animatedLogoutBtn">
-                                        <div class="text-center position-relative">
-                                            <i class="bi bi-box-arrow-right fs-2 mb-2"></i>
-                                            <div class="fw-semibold">Logout</div>
-                                            <small class="opacity-75">Keluar sistem</small>
-                                           <div class="falling__figure" style="left: 10px;"></div>
-                                            <div class="falling__figure" style="left: 30px; animation-delay: 50ms;"></div>
-                                            <div class="falling__figure" style="left: 50px; animation-delay: 100ms;"></div>
-                                            <div class="falling__figure" style="left: 70px; animation-delay: 150ms;"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- System Info -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card card-hover shadow-sm">
-                        <div class="card-header bg-transparent border-0 pb-0">
-                            <h5 class="card-title mb-0">
-                                <i class="bi bi-info-circle-fill text-primary me-2"></i>
-                                Informasi Sistem
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="alert alert-success py-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-shrink-0">
-                                                <i class="bi bi-check-circle-fill fs-4"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Status Sistem</h6>
-                                                <p class="mb-0 small">Semua sistem berjalan normal</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item px-0">
-                                            <div class="d-flex justify-content-between">
-                                                <span>
-                                                    <i class="bi bi-database me-2 text-primary"></i>
-                                                    Database
-                                                </span>
-                                                <span class="badge bg-success">Terhubung</span>
-                                            </div>
-                                        </div>
-                                        <div class="list-group-item px-0">
-                                            <div class="d-flex justify-content-between">
-                                                <span>
-                                                    <i class="bi bi-shield-check me-2 text-success"></i>
-                                                    Keamanan
-                                                </span>
-                                                <span class="badge bg-success">Aktif</span>
-                                            </div>
-                                        </div>
-                                        <div class="list-group-item px-0">
-                                            <div class="d-flex justify-content-between">
-                                                <span>
-                                                    <i class="bi bi-server me-2 text-info"></i>
-                                                    Server
-                                                </span>
-                                                <span class="badge bg-success">Online</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card border-primary">
-                                        <div class="card-body">
-                                            <h6 class="text-primary mb-3">
-                                                <i class="bi bi-journal-bookmark-fill me-2"></i>
-                                                UKK RPL 2026
-                                            </h6>
-                                            <ul class="list-unstyled mb-0">
-                                                <li class="mb-2">
-                                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                                    Aplikasi Catatan Mengajar Guru
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-calendar-check-fill text-info me-2"></i>
-                                                    Versi: 1.0.0
-                                                </li>
-                                                <li class="mb-2">
-                                                    <i class="bi bi-person-fill text-warning me-2"></i>
-                                                    Login sebagai: {{ session('username') ?? 'Admin' }}
-                                                </li>
-                                                <li>
-                                                    <i class="bi bi-flag-fill text-danger me-2"></i>
-                                                    <span class="fw-semibold">Status: Siap Uji</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Aktivitas Terbaru -->
-        <div class="col-lg-4">
-            <div class="card card-hover shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 pb-0">
-                    <h5 class="card-title mb-0">
-                        <i class="bi bi-clock-history text-info me-2"></i>
-                        Aktivitas Terbaru
-                    </h5>
-                </div>
-                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
-                    @if($aktivitas->count() > 0)
-                    <div class="timeline">
-                        @foreach($aktivitas as $index => $act)
-                        <div class="timeline-item animate__animated animate__fadeInRight" 
-                             style="animation-delay: {{ $index * 0.1 }}s">
-                            <div class="timeline-marker bg-{{ 
-                                $index % 3 == 0 ? 'primary' : 
-                                ($index % 3 == 1 ? 'success' : 'info') 
-                            }}"></div>
-                            <div class="timeline-content">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="mb-1">
-                                        @if(str_contains($act->aktivitas, 'Login'))
-                                            <i class="bi bi-box-arrow-in-right text-success me-1"></i>
-                                        @elseif(str_contains($act->aktivitas, 'Logout'))
-                                            <i class="bi bi-box-arrow-right text-danger me-1"></i>
-                                        @elseif(str_contains($act->aktivitas, 'Menambah'))
-                                            <i class="bi bi-plus-circle text-primary me-1"></i>
-                                        @elseif(str_contains($act->aktivitas, 'Mengedit'))
-                                            <i class="bi bi-pencil-square text-warning me-1"></i>
-                                        @elseif(str_contains($act->aktivitas, 'Menghapus'))
-                                            <i class="bi bi-trash text-danger me-1"></i>
-                                        @else
-                                            <i class="bi bi-info-circle text-secondary me-1"></i>
-                                        @endif
-                                        {{ $act->username ?? 'System' }}
-                                    </h6>
-                                    <small class="text-muted">
-                                        {{ date('H:i', strtotime($act->created_at)) }}
-                                    </small>
-                                </div>
-                                <p class="mb-0 small text-muted">
-                                    {{ $act->aktivitas }}
-                                </p>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                    @else
-                    <div class="text-center py-5">
-                        <div class="mb-3">
-                            <i class="bi bi-clock-history display-4 text-muted opacity-25"></i>
-                        </div>
-                        <h6 class="text-muted mb-2">Belum ada aktivitas</h6>
-                        <p class="text-muted small mb-0">Aktivitas akan muncul di sini</p>
-                    </div>
-                    @endif
-                </div>
-                @if($aktivitas->count() > 0)
-                <div class="card-footer bg-transparent border-0">
-                    <div class="text-center">
-                        <a href="#" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-list-ul me-1"></i> Lihat Semua Aktivitas
-                        </a>
-                    </div>
-                </div>
-                @endif
-            </div>
-        </div>
-    </div>
-    
-    <!-- Footer -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="text-center text-muted small py-3">
-                <div class="d-flex justify-content-center align-items-center">
-                    <i class="bi bi-c-circle me-1"></i>
-                    <span>UKK RPL 2026 - Sistem Manajemen Catatan Mengajar Guru</span>
-                    <span class="mx-2">•</span>
-                    <span>Versi 1.0.0</span>
-                    <span class="mx-2">•</span>
-                    <span id="serverTime">{{ date('d F Y H:i:s') }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Additional Styles -->
+                <div class="sidebar-nav px-3">
+                    <h6 class="sidebar-title mb-3">MENU UTAMA</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">
+                            <a class="nav-link {{ request()->is('admin') ? 'active' : '' }}" href="/admin">
+                                <i class="bi bi-speedometer2 me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link {{ request()->is('admin/guru*') ? 'active' : '' }}" href="/admin/guru">
+                                <i class="bi bi-people me-2"></i>
+                                Guru
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link {{ request()->is('admin/kelas*') ? 'active' : '' }}" href="/admin/kelas">
+                                <i class="bi bi-building me-2"></i>
+                                Kelas
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}" href="/admin/jadwal">
+                                <i class="bi bi-calendar-week me-2"></i>
+                                Jadwal
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link {{ request()->is('admin/siswa*') ? 'active' : '' }}" href="/admin/siswa">
+                                <i class="bi bi-people-fill me-2"></i>
+                                Siswa
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-chat me-2"></i>
+                                Chat
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-gear me-2"></i>
+                                Setting
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-question-circle me-2"></i>
+                                Help
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-10 col-md-9 main-content p-4">
+            <!-- Header Content -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="fw-bold">Dashboard</h2>
+                        <div class="search-bar-mobile d-lg-none">
+                            <div class="input-group search-group">
+                                <span class="input-group-text bg-transparent border-0">
+                                    <i class="bi bi-search text-secondary"></i>
+                                </span>
+                                <input type="text" class="form-control search-input" placeholder="Search Here...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Cards Modern -->
+            <div class="row mb-4">
+                <!-- FOLLOWS Card -->
+                <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
+                    <div class="stats-card-modern follows-card">
+                        <div class="card-header">
+                            <h6 class="mb-0">FOLLOWS</h6>
+                            <div class="percentage">{{ $stats['total_pengguna'] ?? '25' }}%</div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-muted">Total pengguna yang terdaftar dalam sistem</p>
+                            <div class="progress-stats">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small>Progress</small>
+                                    <small>{{ $stats['total_pengguna'] ?? '25' }}%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: {{ $stats['total_pengguna'] ?? '25' }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-success">{{ $stats['total_pengguna'] ?? '30' }}% THIS MONTH</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEWS Card -->
+                <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
+                    <div class="stats-card-modern views-card">
+                        <div class="card-header">
+                            <h6 class="mb-0">VIEWS</h6>
+                            <div class="percentage">{{ $stats['total_kegiatan'] ?? '30' }}%</div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-muted">Total kegiatan yang tercatat dalam sistem</p>
+                            <div class="progress-stats">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small>Progress</small>
+                                    <small>{{ $stats['total_kegiatan'] ?? '30' }}%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: {{ $stats['total_kegiatan'] ?? '30' }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-success">{{ $stats['total_kegiatan'] ?? '50' }}% THIS MONTH</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCORE Card -->
+                <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
+                    <div class="stats-card-modern score-card">
+                        <div class="card-header">
+                            <h6 class="mb-0">SCORE</h6>
+                            <div class="percentage">{{ $stats['total_guru'] ?? '50' }}%</div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-muted">Total guru yang aktif dalam sistem</p>
+                            <div class="progress-stats">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small>Progress</small>
+                                    <small>{{ $stats['total_guru'] ?? '50' }}%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: {{ $stats['total_guru'] ?? '50' }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-success">{{ $stats['total_guru'] ?? '60' }}% THIS MONTH</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBSCRIPTIONS Card -->
+                <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
+                    <div class="stats-card-modern subscriptions-card">
+                        <div class="card-header">
+                            <h6 class="mb-0">SUBSCRIPTIONS</h6>
+                            <div class="percentage">{{ $stats['total_siswa'] ?? '75' }}%</div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-muted">Total siswa yang terdaftar dalam sistem</p>
+                            <div class="progress-stats">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small>Progress</small>
+                                    <small>{{ $stats['total_siswa'] ?? '75' }}%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: {{ $stats['total_siswa'] ?? '75' }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-success">{{ $stats['total_siswa'] ?? '60' }}% THIS MONTH</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts and Additional Info -->
+            <div class="row">
+                <!-- Left Column - Charts -->
+                <div class="col-lg-8 mb-4">
+                    <!-- VIEWS Chart -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">VIEWS</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="circle-progress me-3" data-percentage="21">
+                                    <div class="circle-progress-inner">
+                                        <span>21%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">FOLLOWS</h6>
+                                    <p class="text-muted small mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="circle-progress me-3" data-percentage="35">
+                                    <div class="circle-progress-inner">
+                                        <span>35%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">SCOPE</h6>
+                                    <p class="text-muted small mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="circle-progress me-3" data-percentage="28">
+                                    <div class="circle-progress-inner">
+                                        <span>28%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">VIEWS</h6>
+                                    <p class="text-muted small mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBSCRIPTIONS Bar Chart -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">SUBSCRIPTIONS</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="bar-chart">
+                                <div class="row text-center">
+                                    <div class="col">
+                                        <div class="bar-wrapper">
+                                            <div class="bar" style="height: 30%"></div>
+                                            <small>SUN</small>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bar-wrapper">
+                                            <div class="bar" style="height: 60%"></div>
+                                            <small>MON</small>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bar-wrapper">
+                                            <div class="bar" style="height: 45%"></div>
+                                            <small>TUE</small>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bar-wrapper">
+                                            <div class="bar" style="height: 75%"></div>
+                                            <small>WED</small>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bar-wrapper">
+                                            <div class="bar" style="height: 50%"></div>
+                                            <small>THU</small>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bar-wrapper">
+                                            <div class="bar" style="height: 85%"></div>
+                                            <small>FRI</small>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="bar-wrapper">
+                                            <div class="bar" style="height: 40%"></div>
+                                            <small>SAT</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EARNING Chart -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">EARNING</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="earning-chart">
+                                <div class="row text-center">
+                                    <div class="col-3">
+                                        <div class="earning-item">
+                                            <div class="earning-value">300</div>
+                                            <small>Guru</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="earning-item">
+                                            <div class="earning-value">600</div>
+                                            <small>Siswa</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="earning-item">
+                                            <div class="earning-value">350</div>
+                                            <small>Kelas</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="earning-item">
+                                            <div class="earning-value">400</div>
+                                            <small>Jadwal</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Calendar and Activity -->
+                <div class="col-lg-4">
+                    <!-- Calendar -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Calendar</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="calendar-widget">
+                                <div class="calendar-header">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </button>
+                                        <h6 class="mb-0">{{ date('F Y') }}</h6>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="calendar-body">
+                                    <div class="weekdays row text-center mb-2">
+                                        <div class="col p-1"><small>S</small></div>
+                                        <div class="col p-1"><small>M</small></div>
+                                        <div class="col p-1"><small>T</small></div>
+                                        <div class="col p-1"><small>W</small></div>
+                                        <div class="col p-1"><small>T</small></div>
+                                        <div class="col p-1"><small>F</small></div>
+                                        <div class="col p-1"><small>S</small></div>
+                                    </div>
+                                    <div class="days row">
+                                        @php
+                                            $firstDay = date('w', strtotime(date('Y-m-01')));
+                                            $daysInMonth = date('t');
+                                            $currentDay = date('j');
+                                        @endphp
+                                        
+                                        @for($i = 0; $i < $firstDay; $i++)
+                                            <div class="col p-1 text-center"></div>
+                                        @endfor
+                                        
+                                        @for($day = 1; $day <= $daysInMonth; $day++)
+                                            <div class="col p-1 text-center">
+                                                <div class="day {{ $day == $currentDay ? 'current-day' : '' }}">
+                                                    {{ $day }}
+                                                </div>
+                                            </div>
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aktivitas Terbaru -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Aktivitas Terbaru</h5>
+                        </div>
+                        <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                            @if($aktivitas->count() > 0)
+                            <div class="timeline">
+                                @foreach($aktivitas as $index => $act)
+                                <div class="timeline-item">
+                                    <div class="timeline-marker bg-{{ 
+                                        $index % 3 == 0 ? 'primary' : 
+                                        ($index % 3 == 1 ? 'success' : 'info') 
+                                    }}"></div>
+                                    <div class="timeline-content">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="mb-1">
+                                                @if(str_contains($act->aktivitas, 'Login'))
+                                                    <i class="bi bi-box-arrow-in-right text-success me-1"></i>
+                                                @elseif(str_contains($act->aktivitas, 'Logout'))
+                                                    <i class="bi bi-box-arrow-right text-danger me-1"></i>
+                                                @elseif(str_contains($act->aktivitas, 'Menambah'))
+                                                    <i class="bi bi-plus-circle text-primary me-1"></i>
+                                                @elseif(str_contains($act->aktivitas, 'Mengedit'))
+                                                    <i class="bi bi-pencil-square text-warning me-1"></i>
+                                                @elseif(str_contains($act->aktivitas, 'Menghapus'))
+                                                    <i class="bi bi-trash text-danger me-1"></i>
+                                                @else
+                                                    <i class="bi bi-info-circle text-secondary me-1"></i>
+                                                @endif
+                                                {{ $act->username ?? 'System' }}
+                                            </h6>
+                                            <small class="text-muted">
+                                                {{ date('H:i', strtotime($act->created_at)) }}
+                                            </small>
+                                        </div>
+                                        <p class="mb-0 small text-muted">
+                                            {{ $act->aktivitas }}
+                                        </p>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            @else
+                            <div class="text-center py-3">
+                                <i class="bi bi-clock-history display-4 text-muted opacity-25"></i>
+                                <p class="text-muted mt-2">Belum ada aktivitas</p>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
 @section('styles')
 <style>
-    .timeline {
-        position: relative;
-        padding-left: 30px;
-    }
-    /* CSS Tambahan untuk Profil */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3a0ca3;
+    --success-color: #4cc9f0;
+    --info-color: #4895ef;
+    --warning-color: #f72585;
+    --follows-color: #4361ee;
+    --views-color: #4cc9f0;
+    --score-color: #f72585;
+    --subscriptions-color: #7209b7;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar */
+.navbar-glow {
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    box-shadow: 0 4px 20px rgba(67, 97, 238, 0.3);
+}
+
+/* Search Bar */
+.search-bar .search-group {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 8px 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.search-input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+}
+
+.search-input:focus {
+    background: transparent;
+    color: white;
+    box-shadow: none;
+    border: none;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Sidebar */
+.sidebar-menu {
+    background: white;
+    height: calc(100vh - 76px);
+    position: sticky;
+    top: 76px;
+    border-right: 1px solid #e9ecef;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+}
+
+.sidebar-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.user-info {
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    color: white;
+    margin-bottom: 20px;
+}
+
+.profile-img-lg {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-title {
+    color: #6c757d;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sidebar-nav .nav-link {
+    color: #495057;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+}
+
+.sidebar-nav .nav-link:hover {
+    background: rgba(67, 97, 238, 0.1);
+    color: #4361ee;
+    transform: translateX(5px);
+}
+
+.sidebar-nav .nav-link.active {
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    color: white;
+    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+}
+
+.sidebar-nav .nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
+/* Modern Stats Cards */
+.stats-card-modern {
+    background: white;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    overflow: hidden;
+}
+
+.stats-card-modern:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.stats-card-modern .card-header {
+    background: transparent;
+    border-bottom: none;
+    padding: 20px 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stats-card-modern .card-header h6 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    color: #495057;
+    margin: 0;
+}
+
+.percentage {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.follows-card .percentage { color: var(--follows-color); }
+.views-card .percentage { color: var(--views-color); }
+.score-card .percentage { color: var(--score-color); }
+.subscriptions-card .percentage { color: var(--subscriptions-color); }
+
+.stats-card-modern .card-body {
+    padding: 20px;
+}
+
+.stats-card-modern .card-text {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #6c757d;
+    font-family: 'Raleway', sans-serif;
+}
+
+.stats-card-modern .card-footer {
+    background: transparent;
+    border-top: 1px solid #e9ecef;
+    padding: 15px 20px;
+    font-family: 'Raleway', sans-serif;
+}
+
+.stats-card-modern .card-footer small {
+    font-weight: 600;
+}
+
+.progress {
+    height: 6px;
+    border-radius: 3px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 3px;
+    transition: width 1.5s ease;
+}
+
+.follows-card .progress-bar { background: var(--follows-color); }
+.views-card .progress-bar { background: var(--views-color); }
+.score-card .progress-bar { background: var(--score-color); }
+.subscriptions-card .progress-bar { background: var(--subscriptions-color); }
+
+/* Circle Progress */
+.circle-progress {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    border-radius: 50%;
+    background: conic-gradient(#4361ee var(--percentage, 0%), #e9ecef 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-progress::before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+}
+
+.circle-progress-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.circle-progress-inner span {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Bar Chart */
+.bar-chart .bar-wrapper {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.bar-chart .bar {
+    width: 20px;
+    background: linear-gradient(to top, #4361ee, #4cc9f0);
+    border-radius: 10px 10px 0 0;
+    transition: height 1s ease;
+    margin-bottom: 5px;
+}
+
+.bar-chart .bar:hover {
+    opacity: 0.8;
+}
+
+/* Earning Chart */
+.earning-item {
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(67, 97, 238, 0.1);
+    transition: all 0.3s ease;
+}
+
+.earning-item:hover {
+    background: rgba(67, 97, 238, 0.2);
+    transform: scale(1.05);
+}
+
+.earning-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4361ee;
+    margin-bottom: 5px;
+}
+
+/* Calendar */
+.calendar-widget .weekdays {
+    font-weight: 600;
+    color: #495057;
+}
+
+.calendar-widget .day {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.calendar-widget .day:hover {
+    background: rgba(67, 97, 238, 0.1);
+}
+
+.calendar-widget .current-day {
+    background: #4361ee;
+    color: white;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: 20px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -20px;
+    top: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px #e9ecef;
+}
+
+.timeline-content {
+    padding-left: 10px;
+}
+
+/* Profile */
 .profile-img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: cover;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     font-size: 1.1rem;
     transition: all 0.3s ease;
@@ -532,293 +873,74 @@
     box-shadow: 0 0 15px rgba(255,255,255,0.5);
 }
 
-/* Dropdown Menu Profil */
-.dropdown-menu {
-    border-radius: 10px;
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.dropdown-item {
-    border-radius: 5px;
-    margin: 2px 5px;
-    transition: all 0.2s ease;
-}
-
-.dropdown-item:hover {
-    background: linear-gradient(90deg, rgba(67, 97, 238, 0.1), rgba(67, 97, 238, 0.05));
-    transform: translateX(5px);
-}
-
-/* Welcome Card */
-.welcome-card {
-    position: relative;
-    overflow: hidden;
-}
-
-.welcome-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    border-radius: 50%;
-}
-
-/* Live Time di Welcome */
-#liveWelcomeTime {
-    font-weight: bold;
-    background: rgba(255,255,255,0.2);
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin: 0 2px;
-}
-    
-    .timeline::before {
-        content: '';
-        position: absolute;
-        left: 15px;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background: #e9ecef;
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar-menu {
+        height: auto;
+        position: static;
     }
     
-    .timeline-item {
-        position: relative;
-        margin-bottom: 20px;
+    .main-content {
+        padding: 15px;
     }
     
-    .timeline-marker {
-        position: absolute;
-        left: -30px;
-        top: 5px;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
+    .percentage {
+        font-size: 1.5rem;
     }
-    
-    .timeline-content {
-        padding-left: 15px;
-    }
-    
-    .stats-card {
-        position: relative;
-        overflow: hidden;
-        cursor: pointer;
-    }
-    
-    .stats-card::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: linear-gradient(90deg, var(--bs-primary), var(--bs-info));
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
         opacity: 0;
-        transition: opacity 0.3s;
+        transform: translateY(20px);
     }
-    
-    .stats-card:hover::after {
+    to {
         opacity: 1;
+        transform: translateY(0);
     }
-    
-    .btn {
-        transition: all 0.2s ease;
-    }
-    
-    .btn:hover {
-        transform: translateY(-2px);
-    }
-    /* CSS Animasi Logout Button */
-.LogoutButton {
-    position: relative;
-    overflow: hidden;
 }
 
-.falling__figure {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: #ff4757;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0;
-    bottom: 100%;
-    animation: spin 100ms infinite linear;
-    --figure-duration: 500;
+.stats-card-modern {
+    animation: fadeInUp 0.6s ease;
 }
 
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.follows-card { animation-delay: 0.1s; }
+.views-card { animation-delay: 0.2s; }
+.score-card { animation-delay: 0.3s; }
+.subscriptions-card { animation-delay: 0.4s; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
 }
 
-.LogoutButton--light .button__text {
-    color: #f2f2f2;
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
-.LogoutButton--light .cursor,
-.InputButton--light .cursor {
-    fill: #f2f2f2;
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
 }
 
-.btn-logout-animated {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.btn-logout-animated:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 10px 20px rgba(255, 71, 87, 0.3) !important;
-}
-
-.btn-logout-animated:hover::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    animation: shine 0.5s infinite;
-}
-
-@keyframes shine {
-    0% { left: -100%; }
-    100% { left: 100%; }
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }
 </style>
 @endsection
 
-<!-- Additional Scripts -->
 @section('scripts')
 <script>
 $(document).ready(function() {
-    // Live time update untuk navbar
-    function updateDateTime() {
-        const now = new Date();
-        const options = { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        };
-            /* Dropdown logout animation */
-    .logout-animated {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .logout-animated:hover {
-        padding-left: 20px !important;
-    }
-
-    .logout-animated:hover::after {
-        content: '→';
-        position: absolute;
-        right: 15px;
-        opacity: 0;
-        animation: slideRight 0.1s forwards;
-    }
-
-    @keyframes slideRight {
-        to {
-            opacity: 1;
-            transform: translateX(-5px);
-        }
-    }
-        
-        const dateStr = now.toLocaleDateString('id-ID', options);
-        const timeStr = now.toLocaleTimeString('id-ID', { 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit' 
-        });
-        
-        $('#liveTime').text(timeStr);
-        $('#serverTime').text(now.toLocaleDateString('id-ID', options) + ' ' + timeStr);
-    }
-    
-    // Update live time di welcome section
-    function updateWelcomeTime() {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('id-ID', { 
-            hour: '2-digit', 
-            minute: '2-digit'
-        });
-        $('#liveWelcomeTime').text(timeStr);
-    }
-    
-    // Update system time di card system info
-    function updateSystemTime() {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('id-ID', { 
-            hour: '2-digit', 
-            minute: '2-digit'
-        });
-        $('#systemTime').text(timeStr);
-    }
-    
-    // Update waktu setiap detik
-    setInterval(updateDateTime, 1000);
-    setInterval(updateWelcomeTime, 1000);
-    setInterval(updateSystemTime, 60000);
-    
-    // Panggil fungsi saat halaman load
-    updateDateTime();
-    updateWelcomeTime();
-    updateSystemTime();
-    
-    // Stats card hover effect
-    $('.stats-card').hover(
-        function() {
-            $(this).css('transform', 'translateY(-5px)');
-        },
-        function() {
-            $(this).css('transform', 'translateY(0)');
-        }
-    );
-    
-    // Notification badge animation
-    $('.badge-pulse').hover(
-        function() {
-            $(this).css('animation', 'pulse 1s infinite');
-        },
-        function() {
-            $(this).css('animation', 'pulse 2s infinite');
-        }
-    );
-    
-    // Auto refresh data setiap 30 detik
-    let refreshInterval = setInterval(function() {
-        // Simulasi update notifikasi
-        const badge = $('.badge-pulse');
-        if (badge.length) {
-            const current = parseInt(badge.text());
-            if (current < 9) {
-                badge.text(current + 1);
-            }
-        }
-    }, 30000);
-    
-    // Stop refresh saat keluar halaman
-    $(window).on('beforeunload', function() {
-        clearInterval(refreshInterval);
+    // Initialize circle progress
+    $('.circle-progress').each(function() {
+        const percentage = $(this).data('percentage');
+        $(this).css('--percentage', percentage * 3.6 + 'deg');
     });
-    
-    // Toast notification untuk welcome
-    setTimeout(function() {
-        showToast(
-            'Selamat datang di Dashboard Admin UKK RPL! 🎉', 
-            'success'
-        );
-    }, 1000);
-    
-    // Progress bar animation
+
+    // Animate progress bars
     $('.progress-bar').each(function() {
         const width = $(this).attr('style').match(/width: (\d+)%/);
         if (width) {
@@ -827,115 +949,49 @@ $(document).ready(function() {
             }, 1500);
         }
     });
-    
-    // Smooth scroll untuk internal links
-    $(document).on('click', 'a[href^="#"]', function(e) {
-        if($(this.hash).length) {
-            e.preventDefault();
-            $('html, body').animate({
-                scrollTop: $(this.hash).offset().top - 80
-            }, 800);
+
+    // Update live time
+    function updateTime() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        const dateStr = now.toLocaleDateString('id-ID', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        $('#serverTime').text(dateStr + ' ' + timeStr);
+    }
+
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Search functionality
+    $('.search-input').on('keypress', function(e) {
+        if (e.which === 13) {
+            const query = $(this).val().trim();
+            if (query) {
+                alert('Searching for: ' + query);
+                // Implement actual search functionality here
+            }
         }
     });
-});
-// Animasi tombol logout
-$('#animatedLogoutBtn').hover(
-    function() {
-        const $btn = $(this);
-        const figures = $btn.find('.falling__figure');
-        
-        figures.each(function(index) {
-            const $figure = $(this);
-            const duration = 500 + (index * 100);
-            
-            $figure.css({
-                '--figure-duration': duration,
-                'opacity': '1',
-                'bottom': '100%',
-                'transform': 'rotate(0deg)'
-            });
-            
-            setTimeout(() => {
-                $figure.css({
-                    'bottom': '-20px',
-                    'transform': 'rotate(360deg)',
-                    'opacity': '0'
-                });
-            }, 10);
-            
-            setTimeout(() => {
-                $figure.css({
-                    'opacity': '0',
-                    'bottom': '100%',
-                    'transform': 'rotate(0deg)'
-                });
-            }, duration);
-        });
-    },
-    function() {
-        $(this).find('.falling__figure').css('opacity', '0');
-    }
-);
 
-// Efek klik logout
-$('#animatedLogoutBtn').click(function(e) {
-    e.preventDefault();
-    const $btn = $(this);
-    const url = $btn.attr('href');
-    
-    // Tambahkan efek klik
-    $btn.addClass('active');
-    
-    // Animasi partikel
-    for(let i = 0; i < 8; i++) {
-        createLogoutParticle($btn, i);
-    }
-    
-    // Tunggu animasi selesai sebelum redirect
-    setTimeout(() => {
-        window.location.href = url;
-    }, 800);
-    
-    return false;
-});
-
-function createLogoutParticle($btn, index) {
-    const $particle = $('<div class="logout-particle"></div>');
-    $btn.append($particle);
-    
-    const size = 5 + Math.random() * 10;
-    const angle = (index / 8) * Math.PI * 2;
-    const distance = 50 + Math.random() * 50;
-    const duration = 600 + Math.random() * 400;
-    
-    $particle.css({
-        'position': 'absolute',
-        'width': size + 'px',
-        'height': size + 'px',
-        'background': 'linear-gradient(135deg, #ff6b6b, #ff4757)',
-        'border-radius': '50%',
-        'top': '50%',
-        'left': '50%',
-        'transform': 'translate(-50%, -50%)',
-        'opacity': '1',
-        'box-shadow': '0 0 10px rgba(255, 71, 87, 0.7)'
+    // Calendar navigation
+    $('.calendar-widget .btn').on('click', function() {
+        // Implement calendar navigation
+        alert('Calendar navigation would go here');
     });
-    
-    setTimeout(() => {
-        $particle.css({
-            'top': '50% - ' + (Math.sin(angle) * distance) + 'px',
-            'left': '50% + ' + (Math.cos(angle) * distance) + 'px',
-            'opacity': '0',
-            'transform': 'translate(-50%, -50%) scale(0.5)'
-        });
-    }, 10);
-    
-    setTimeout(() => {
-        $particle.remove();
-    }, duration);
-}
 
-// Tambahkan CSS untuk partikel logout
-$('head').append('<style>.logout-particle { transition: all 0.5s cubic-bezier(0.7, 0.1, 1, 1); }</style>');
+    // Stats card click
+    $('.stats-card-modern').on('click', function() {
+        const cardType = $(this).find('.card-header h6').text();
+        alert('Viewing details for: ' + cardType);
+    });
+});
 </script>
 @endsection
