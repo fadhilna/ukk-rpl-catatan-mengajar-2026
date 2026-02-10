@@ -74,6 +74,43 @@
 <div class="row justify-content-center">
 <div class="col-md-8">
 
+<!-- ⭐⭐ TAMBAHKAN KODE INI ⭐⭐ -->
+@if(count($kelas_sudah_absen) > 0)
+<div class="alert alert-warning animate__animated animate__fadeIn mb-4">
+    <h6><i class="bi bi-exclamation-triangle"></i> Peringatan!</h6>
+    <p>Beberapa kelas sudah memiliki rekap kehadiran hari ini:</p>
+    <ul class="mb-0">
+        @foreach($kelas_sudah_absen as $kelas)
+        <li>
+            <strong>{{ $kelas->nama_kelas }}</strong> 
+            ({{ $kelas->jumlah_kegiatan }} kegiatan)
+            <span class="badge bg-success ms-2">✓ Sudah Absen</span>
+        </li>
+        @endforeach
+    </ul>
+    <small class="d-block mt-2">
+        <i class="bi bi-info-circle"></i> 
+        Setiap kelas hanya perlu 1x absen per hari, meskipun ada banyak jam pelajaran.
+    </small>
+</div>
+@endif
+
+@if(empty($jadwal))
+<div class="alert alert-success animate__animated animate__fadeIn">
+    <h6><i class="bi bi-check-circle-fill"></i> Semua Kelas Sudah Diabsen!</h6>
+    <p>Anda sudah menginput kehadiran untuk semua kelas yang mengajar hari ini.</p>
+    <div class="mt-2">
+        <a href="/guru/kegiatan" class="btn btn-outline-success btn-sm">
+            <i class="bi bi-eye"></i> Lihat Riwayat Kegiatan
+        </a>
+        <a href="/guru/dashboard" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-speedometer2"></i> Kembali ke Dashboard
+        </a>
+    </div>
+</div>
+@else
+
+<!-- ⭐⭐ FORM INPUT KEGIATAN (YANG SUDAH ADA) ⭐⭐ -->
 <div class="card">
 <div class="card-header bg-success text-white">
     <h4 class="mb-0">
@@ -90,27 +127,66 @@
     <strong>Guru:</strong> {{ $guru->nama }}
 </div>
 
-<form method="POST" action="{{ route('guru.kegiatan.store') }}">
+<form method="POST" action="{{ route('guru.kegiatan.store') }}" id="kegiatanForm">
 @csrf
 
 <!-- ================= JADWAL ================= -->
 <div class="mb-4">
     <h5><i class="bi bi-calendar-week"></i> Pilih Jadwal Mengajar</h5>
-
-    @foreach($jadwal as $j)
-    <label class="list-group-item">
-        <input class="form-check-input me-2 jadwal-radio"
-               type="radio"
-               name="jadwal_id"
-               value="{{ $j->id }}"
-               required>
-        <strong>{{ $j->nama_kelas }}</strong> - {{ $j->mata_pelajaran }}
-        <div class="small text-muted">
-            {{ date('H:i', strtotime($j->waktu_mulai)) }} -
-            {{ date('H:i', strtotime($j->waktu_selesai)) }}
-        </div>
-    </label>
-    @endforeach
+    
+    @if(count($jadwal) == 0)
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+        Tidak ada jadwal yang tersedia untuk diisi hari ini.
+    </div>
+    @else
+        @foreach($jadwal as $j)
+        @php
+            $kelas_sudah_absen = in_array($j->kelas_id, $kelas_sudah_absen_ids ?? []);
+            $disabled = $kelas_sudah_absen;
+        @endphp
+        
+        <label class="list-group-item {{ $disabled ? 'bg-light text-muted' : '' }}">
+            <input class="form-check-input me-2 jadwal-radio"
+                   type="radio"
+                   name="jadwal_id"
+                   value="{{ $j->id }}"
+                   {{ $disabled ? 'disabled' : 'required' }}
+                   data-kelas-id="{{ $j->kelas_id }}">
+            
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div>
+                    <strong>{{ $j->nama_kelas }}</strong> - {{ $j->mata_pelajaran }}
+                    <div class="small text-muted">
+                        {{ date('H:i', strtotime($j->waktu_mulai)) }} -
+                        {{ date('H:i', strtotime($j->waktu_selesai)) }}
+                    </div>
+                </div>
+                
+                @if($disabled)
+                <span class="badge bg-secondary">
+                    <i class="bi bi-lock"></i> Sudah Absen
+                </span>
+                @endif
+            </div>
+        </label>
+        @endforeach
+    @endif
+    
+    <!-- Info jika semua jadwal disabled -->
+    @php
+        $semua_disabled = count($jadwal) > 0 && collect($jadwal)->every(function($j) use ($kelas_sudah_absen_ids) {
+            return in_array($j->kelas_id, $kelas_sudah_absen_ids ?? []);
+        });
+    @endphp
+    
+    @if($semua_disabled)
+    <div class="alert alert-info mt-3">
+        <i class="bi bi-info-circle"></i>
+        Semua jadwal hari ini sudah memiliki rekap kehadiran.
+        <a href="/guru/kegiatan" class="alert-link">Lihat riwayat kegiatan</a>
+    </div>
+    @endif
 </div>
 
 <!-- ================= MATERI ================= -->
@@ -160,16 +236,41 @@
 </form>
 </div>
 </div>
+<!-- ⭐⭐ AKHIR DARI FORM ⭐⭐ -->
 
+</div> <!-- ⭐⭐ TAMBAHKAN INI: tutup col-md-8 ⭐⭐ -->
+</div> <!-- ⭐⭐ TAMBAHKAN INI: tutup row ⭐⭐ -->
+</div> <!-- ⭐⭐ TAMBAHKAN INI: tutup container ⭐⭐ -->
 </div>
 </div>
 </div>
+@endif
 
 <!-- ================= SCRIPT FIXED ================= -->
 <script>
 // Function untuk render tabel siswa
-function renderSiswaTable(siswa) {
-    let html = `
+function renderSiswaTable(siswa, kelasInfo = null) {
+    let html = '';
+    
+    // ⭐⭐ TAMBAHKAN PERINGATAN JIKA KELAS SUDAH ABSEN ⭐⭐
+    if (kelasInfo && kelasInfo.sudah_absen) {
+        html += `
+        <div class="alert alert-warning mb-3">
+            <i class="bi bi-exclamation-triangle"></i>
+            <strong>Peringatan!</strong> 
+            Kelas <strong>${kelasInfo.nama_kelas}</strong> sudah memiliki 
+            ${kelasInfo.jumlah} rekap kehadiran hari ini.
+            <br>
+            <small>
+                <i class="bi bi-info-circle"></i>
+                Input kehadiran lagi akan membuat duplikat data.
+                Lanjutkan hanya jika memang perlu rekapan tambahan.
+            </small>
+        </div>
+        `;
+    }
+    
+    html += `
     <table class="table table-bordered table-hover">
         <thead class="table-light">
             <tr>
@@ -239,31 +340,36 @@ document.querySelectorAll('.jadwal-radio').forEach(radio => {
             </div>
         `;
 
-        // Fetch data siswa
+        // 1. Ambil data siswa
         fetch(`/debug-get-siswa/${jadwalId}`)
-            .then(response => {
-                console.log('Status:', response.status);
-                console.log('URL:', response.url);
+            .then(response => response.json())
+            .then(siswaData => {
+                console.log('Data siswa:', siswaData);
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Data siswa:', data);
-                
-                if (data.siswa && data.siswa.length > 0) {
-                    siswaContainer.innerHTML = renderSiswaTable(data.siswa);
-                } else {
-                    siswaContainer.innerHTML = `
-                        <div class="alert alert-warning">
-                            <i class="bi bi-exclamation-triangle"></i>
-                            Tidak ada siswa di kelas ini.
-                            <br><small>Silakan tambah siswa via admin panel.</small>
-                        </div>
-                    `;
-                }
+                // 2. Cek apakah kelas ini sudah ada kegiatan hari ini
+                fetch(`/api/cek-kegiatan-kelas?jadwal_id=${jadwalId}&tanggal={{ date('Y-m-d') }}`)
+                    .then(res => res.json())
+                    .then(kelasInfo => {
+                        console.log('Info kelas:', kelasInfo);
+                        
+                        if (siswaData.siswa && siswaData.siswa.length > 0) {
+                            siswaContainer.innerHTML = renderSiswaTable(siswaData.siswa, kelasInfo);
+                        } else {
+                            siswaContainer.innerHTML = `
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    Tidak ada siswa di kelas ini.
+                                </div>
+                            `;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error cek kegiatan:', error);
+                        // Fallback tanpa info kelas
+                        if (siswaData.siswa && siswaData.siswa.length > 0) {
+                            siswaContainer.innerHTML = renderSiswaTable(siswaData.siswa);
+                        }
+                    });
             })
             .catch(error => {
                 console.error('Fetch error:', error);
@@ -272,11 +378,230 @@ document.querySelectorAll('.jadwal-radio').forEach(radio => {
                         <i class="bi bi-x-circle"></i>
                         Gagal memuat data siswa.
                         <br><small>Error: ${error.message}</small>
-                        <br><small>Cek koneksi atau refresh halaman.</small>
                     </div>
                 `;
             });
     });
+});
+document.querySelectorAll('.jadwal-radio').forEach(radio => {
+    radio.addEventListener('change', function () {
+        // Skip jika disabled
+        if (this.disabled) {
+            return;
+        }
+        
+        const siswaContainer = document.getElementById('siswa-container');
+        const jadwalId = this.value;
+        const kelasId = this.dataset.kelasId;
+
+        if (!jadwalId) {
+            siswaContainer.innerHTML = `
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    Pilih jadwal terlebih dahulu
+                </div>
+            `;
+            return;
+        }
+
+        // Tampilkan loading
+        siswaContainer.innerHTML = `
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 text-muted">Memuat data siswa...</p>
+            </div>
+        `;
+
+        // 1. Ambil data siswa
+        fetch(`/debug-get-siswa/${jadwalId}`)
+            .then(response => response.json())
+            .then(siswaData => {
+                console.log('Data siswa:', siswaData);
+                
+                // 2. Cek apakah kelas ini sudah ada kegiatan hari ini
+                fetch(`/cek-kegiatan-kelas?jadwal_id=${jadwalId}&tanggal={{ date('Y-m-d') }}`)
+                    .then(res => res.json())
+                    .then(kelasInfo => {
+                        console.log('Info kelas:', kelasInfo);
+                        
+                        if (siswaData.siswa && siswaData.siswa.length > 0) {
+                            siswaContainer.innerHTML = renderSiswaTable(siswaData.siswa, kelasInfo);
+                        } else {
+                            siswaContainer.innerHTML = `
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    Tidak ada siswa di kelas ini.
+                                </div>
+                            `;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error cek kegiatan:', error);
+                        if (siswaData.siswa && siswaData.siswa.length > 0) {
+                            siswaContainer.innerHTML = renderSiswaTable(siswaData.siswa);
+                        }
+                    });
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                siswaContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-x-circle"></i>
+                        Gagal memuat data siswa.
+                        <br><small>Error: ${error.message}</small>
+                    </div>
+                `;
+            });
+    });
+});
+
+// Confirmation pada submit
+document.getElementById('kegiatanForm').addEventListener('submit', function(e) {
+    const jadwalRadio = document.querySelector('input[name="jadwal_id"]:checked');
+    
+    if (!jadwalRadio) {
+        e.preventDefault();
+        alert('Pilih jadwal terlebih dahulu!');
+        return;
+    }
+    
+    // Cek apakah jadwal disabled
+    if (jadwalRadio.disabled) {
+        e.preventDefault();
+        alert('Jadwal ini sudah diabsen hari ini!');
+        return;
+    }
+    
+    const jadwalId = jadwalRadio.value;
+    
+    fetch(`/cek-kegiatan-kelas?jadwal_id=${jadwalId}&tanggal={{ date('Y-m-d') }}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.sudah_absen) {
+                e.preventDefault();
+                
+                const modalHtml = `
+                    <div class="modal fade" id="confirmModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-warning">
+                                        <i class="bi bi-exclamation-triangle"></i> PERINGATAN
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Kelas <strong>${data.nama_kelas}</strong> sudah memiliki 
+                                    <strong>${data.jumlah}</strong> rekap kehadiran hari ini.</p>
+                                    <p class="text-danger">Apakah Anda yakin ingin membuat rekap kehadiran tambahan?</p>
+                                    <small class="text-muted">
+                                        <i class="bi bi-info-circle"></i> 
+                                        Rekomendasi: Tidak, kecuali untuk sesi khusus atau remedial.
+                                    </small>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Batal
+                                    </button>
+                                    <button type="button" class="btn btn-warning" id="forceSubmit">
+                                        Ya, Buat Rekap Tambahan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Tambahkan modal ke body
+                const modalDiv = document.createElement('div');
+                modalDiv.innerHTML = modalHtml;
+                document.body.appendChild(modalDiv);
+                
+                // Tampilkan modal
+                const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+                modal.show();
+                
+                // Handle force submit
+                document.getElementById('forceSubmit').addEventListener('click', function() {
+                    modal.hide();
+                    document.getElementById('kegiatanForm').submit();
+                });
+                
+                // Hapus modal setelah ditutup
+                document.getElementById('confirmModal').addEventListener('hidden.bs.modal', function() {
+                    modalDiv.remove();
+                });
+            }
+        });
+});
+
+// ⭐⭐ TAMBAHKAN CONFIRMATION PADA SUBMIT ⭐⭐
+document.querySelector('form').addEventListener('submit', function(e) {
+    const jadwalId = document.querySelector('input[name="jadwal_id"]:checked')?.value;
+    
+    if (!jadwalId) return;
+    
+    // Cek apakah kelas sudah ada absen
+    fetch(`/api/cek-kegiatan-kelas?jadwal_id=${jadwalId}&tanggal={{ date('Y-m-d') }}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.sudah_absen) {
+                e.preventDefault(); // Hentikan submit
+                
+                // Tampilkan modal konfirmasi
+                const modalHtml = `
+                    <div class="modal fade" id="confirmModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-warning">
+                                        <i class="bi bi-exclamation-triangle"></i> PERINGATAN
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Kelas <strong>${data.nama_kelas}</strong> sudah memiliki 
+                                    <strong>${data.jumlah}</strong> rekap kehadiran hari ini.</p>
+                                    <p class="text-danger">Apakah Anda yakin ingin membuat rekap kehadiran tambahan?</p>
+                                    <small class="text-muted">
+                                        <i class="bi bi-info-circle"></i> 
+                                        Rekomendasi: Tidak, kecuali untuk sesi khusus atau remedial.
+                                    </small>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Batal
+                                    </button>
+                                    <button type="button" class="btn btn-warning" id="forceSubmit">
+                                        Ya, Buat Rekap Tambahan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Tambahkan modal ke body
+                const modalDiv = document.createElement('div');
+                modalDiv.innerHTML = modalHtml;
+                document.body.appendChild(modalDiv);
+                
+                // Tampilkan modal
+                const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+                modal.show();
+                
+                // Handle force submit
+                document.getElementById('forceSubmit').addEventListener('click', function() {
+                    modal.hide();
+                    document.querySelector('form').submit();
+                });
+                
+                // Hapus modal setelah ditutup
+                document.getElementById('confirmModal').addEventListener('hidden.bs.modal', function() {
+                    modalDiv.remove();
+                });
+            }
+        });
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

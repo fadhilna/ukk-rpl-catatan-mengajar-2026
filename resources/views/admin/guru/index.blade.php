@@ -73,21 +73,20 @@
 </nav>
 
 
-<!-- KONTEN GURU (KONTEN ASLI TANPA PERUBAHAN) -->
 <div class="container-fluid px-4 pt-4">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-      
-    
+        <!-- Header content can be added here -->
     </div>
-     <div class="container mt-4">
+    
+    <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-14">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0">
-                            <i class="bi bi-person-plus"></i> Tambah Data Guru Baru
-                        </h4>
+            <div class="col-12">
+                <div class="card card-hover mb-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-person-plus me-2"></i> Tambah Data Guru Baru
+                        </h5>
                     </div>
                     <div class="card-body">
                         @if(session('error'))
@@ -99,65 +98,84 @@
                         <form method="POST" action="{{ route('admin.guru.store') }}" onsubmit="return validasiForm()">
                             @csrf
                             
-                            <h5 class="mb-3">Data Pribadi</h5>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Nama Guru *</label>
+                            <h6 class="mb-3 text-primary fw-semibold border-bottom pb-2">
+                                <i class="bi bi-person-vcard me-2"></i> Data Pribadi
+                            </h6>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Nama Guru <span class="text-danger">*</span></label>
                                     <input type="text" name="nama" class="form-control" required 
                                            placeholder="Nama lengkap guru">
+                                    <small class="text-muted">Masukkan nama lengkap guru</small>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">NIP</label>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">NIP</label>
                                     <input type="text" name="nip" class="form-control" 
                                            placeholder="Nomor Induk Pegawai">
+                                    <small class="text-muted">Masukkan NIP guru (opsional)</small>
                                 </div>
                             </div>
                             
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email</label>
+                            <div class="row g-3 mt-2">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Email</label>
                                     <input type="email" name="email" class="form-control" 
                                            placeholder="email@sekolah.sch.id">
+                                    <small class="text-muted">Masukkan email valid guru</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Additional field can be added here -->
                                 </div>
                             </div>
                             
-                            <hr class="my-4">
-                            <h5 class="mb-3">Data Login</h5>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Username *</label>
+                            <h6 class="mb-3 mt-4 text-primary fw-semibold border-bottom pb-2">
+                                <i class="bi bi-key me-2"></i> Data Login
+                            </h6>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Username <span class="text-danger">*</span></label>
                                     <input type="text" name="username" class="form-control" required 
                                            placeholder="Username untuk login">
-                                    <div class="form-text">Minimal 3 karakter</div>
+                                    <small class="text-muted">Minimal 3 karakter</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Spacer for alignment -->
                                 </div>
                             </div>
                             
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Password *</label>
+                            <div class="row g-3 mt-2">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
                                     <input type="password" name="password" id="password" 
                                            class="form-control" required minlength="6">
-                                    <div class="form-text">Minimal 6 karakter</div>
+                                    <small class="text-muted">Minimal 6 karakter</small>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Konfirmasi Password *</label>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Konfirmasi Password <span class="text-danger">*</span></label>
                                     <input type="password" name="password_confirmation" 
                                            id="password_confirmation" class="form-control" required>
-                                    <div class="form-text">Harus sama dengan password</div>
+                                    <small class="text-muted">Harus sama dengan password di atas</small>
                                 </div>
                             </div>
                             
-                            <div class="d-flex justify-content-between mt-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-save"></i> Simpan Data Guru
-                                </button>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="bi bi-save me-2"></i> Simpan Data Guru
+                                    </button>
+                                    <button type="reset" class="btn btn-outline-secondary">
+                                        <i class="bi bi-x-circle me-2"></i> Reset Form
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </div>
-                    <div class="card-footer text-muted">
+                    <div class="card-footer text-muted bg-light">
                         <small>
-                            <i class="bi bi-info-circle"></i> 
-                            Data yang bertanda * wajib diisi. Password akan dienkripsi MD5.
+                            <i class="bi bi-info-circle me-1"></i> 
+                            Data yang bertanda <span class="text-danger">*</span> wajib diisi. Password akan dienkripsi dengan MD5.
                         </small>
                     </div>
                 </div>
@@ -166,17 +184,21 @@
     </div>
 
     @if(session('success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+        <i class="bi bi-check-circle me-2"></i>
         {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
 
     @if(session('error'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+        <i class="bi bi-exclamation-circle me-2"></i>
         {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
-
+</div>
       <div>
             <h3 class="mb-1">
                 <i class="bi bi-people"></i> Data Guru

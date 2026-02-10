@@ -1,0 +1,322 @@
+/* ============================================
+   WARNA FULL BARIS UNTUK GURU DI TABEL ADMIN
+   ============================================ */
+
+/* TOTOK WARITO - BIRU */
+tr[data-guru-name="totok-warsito"] {
+    background-color: rgba(13, 110, 253, 0.03) !important;
+    border-left: 4px solid #0d6efd !important;
+}
+
+tr[data-guru-name="totok-warsito"]:hover {
+    background-color: rgba(13, 110, 253, 0.08) !important;
+}
+
+tr[data-guru-name="totok-warsito"] .guru-badge {
+    background-color: #e3f2fd !important;
+    color: #0d6efd !important;
+    border: 1px solid #0d6efd !important;
+}
+
+tr[data-guru-name="totok-warsito"] .btn-outline-primary {
+    border-color: #0d6efd !important;
+    color: #0d6efd !important;
+}
+
+tr[data-guru-name="totok-warsito"] .btn-outline-primary:hover {
+    background-color: #0d6efd !important;
+    color: white !important;
+}
+
+/* SITI AMINAH - HIJAU */
+tr[data-guru-name="siti-aminah"] {
+    background-color: rgba(25, 135, 84, 0.03) !important;
+    border-left: 4px solid #198754 !important;
+}
+
+tr[data-guru-name="siti-aminah"]:hover {
+    background-color: rgba(25, 135, 84, 0.08) !important;
+}
+
+tr[data-guru-name="siti-aminah"] .guru-badge {
+    background-color: #d1e7dd !important;
+    color: #198754 !important;
+    border: 1px solid #198754 !important;
+}
+
+tr[data-guru-name="siti-aminah"] .btn-outline-primary {
+    border-color: #198754 !important;
+    color: #198754 !important;
+}
+
+tr[data-guru-name="siti-aminah"] .btn-outline-primary:hover {
+    background-color: #198754 !important;
+    color: white !important;
+}
+
+/* BUDI SANTOSO - ORANGE */
+tr[data-guru-name="budi-santoso"] {
+    background-color: rgba(253, 126, 20, 0.03) !important;
+    border-left: 4px solid #fd7e14 !important;
+}
+
+tr[data-guru-name="budi-santoso"]:hover {
+    background-color: rgba(253, 126, 20, 0.08) !important;
+}
+
+tr[data-guru-name="budi-santoso"] .guru-badge {
+    background-color: #fff3cd !important;
+    color: #fd7e14 !important;
+    border: 1px solid #fd7e14 !important;
+}
+
+tr[data-guru-name="budi-santoso"] .btn-outline-primary {
+    border-color: #fd7e14 !important;
+    color: #fd7e14 !important;
+}
+
+tr[data-guru-name="budi-santoso"] .btn-outline-primary:hover {
+    background-color: #fd7e14 !important;
+    color: white !important;
+}
+
+/* JOKO SUSANTO - CYAN */
+tr[data-guru-name="joko-susanto"] {
+    background-color: rgba(13, 202, 240, 0.03) !important;
+    border-left: 4px solid #0dcaf0 !important;
+}
+
+tr[data-guru-name="joko-susanto"]:hover {
+    background-color: rgba(13, 202, 240, 0.08) !important;
+}
+
+tr[data-guru-name="joko-susanto"] .guru-badge {
+    background-color: #d1ecf1 !important;
+    color: #0dcaf0 !important;
+    border: 1px solid #0dcaf0 !important;
+}
+
+tr[data-guru-name="joko-susanto"] .btn-outline-primary {
+    border-color: #0dcaf0 !important;
+    color: #0dcaf0 !important;
+}
+
+tr[data-guru-name="joko-susanto"] .btn-outline-primary:hover {
+    background-color: #0dcaf0 !important;
+    color: white !important;
+}
+
+/* HERI KRISTIANTO - MERAH */
+tr[data-guru-name="heri-kristianto"] {
+    background-color: rgba(220, 53, 69, 0.03) !important;
+    border-left: 4px solid #dc3545 !important;
+}
+
+tr[data-guru-name="heri-kristianto"]:hover {
+    background-color: rgba(220, 53, 69, 0.08) !important;
+}
+
+tr[data-guru-name="heri-kristianto"] .guru-badge {
+    background-color: #f8d7da !important;
+    color: #dc3545 !important;
+    border: 1px solid #dc3545 !important;
+}
+
+tr[data-guru-name="heri-kristianto"] .btn-outline-primary {
+    border-color: #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+tr[data-guru-name="heri-kristianto"] .btn-outline-primary:hover {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+/* ============================================
+   WARNA OTOMATIS UNTUK GURU LAINNYA
+   ============================================ */
+
+/* Generate warna unik untuk guru lainnya */
+tr[data-guru-hash]:not([data-guru-name="totok-warsito"]):not([data-guru-name="siti-aminah"]):not([data-guru-name="budi-santoso"]):not([data-guru-name="joko-susanto"]):not([data-guru-name="heri-kristianto"]) {
+    --hue: calc(var(--guru-hash) * 137.508 % 360);
+}
+
+/* Full row background */
+tr[data-guru-hash]:not([data-guru-name="totok-warsito"]):not([data-guru-name="siti-aminah"]):not([data-guru-name="budi-santoso"]):not([data-guru-name="joko-susanto"]):not([data-guru-name="heri-kristianto"]) {
+    background-color: hsla(var(--hue), 70%, 45%, 0.03) !important;
+    border-left: 4px solid hsl(var(--hue), 70%, 45%) !important;
+}
+
+tr[data-guru-hash]:not([data-guru-name="totok-warsito"]):not([data-guru-name="siti-aminah"]):not([data-guru-name="budi-santoso"]):not([data-guru-name="joko-susanto"]):not([data-guru-name="heri-kristianto"]):hover {
+    background-color: hsla(var(--hue), 70%, 45%, 0.08) !important;
+}
+
+/* Badge guru */
+tr[data-guru-hash]:not([data-guru-name="totok-warsito"]):not([data-guru-name="siti-aminah"]):not([data-guru-name="budi-santoso"]):not([data-guru-name="joko-susanto"]):not([data-guru-name="heri-kristianto"]) .guru-badge {
+    background-color: hsl(var(--hue), 70%, 90%) !important;
+    color: hsl(var(--hue), 70%, 35%) !important;
+    border: 1px solid hsl(var(--hue), 70%, 35%) !important;
+}
+
+/* Tombol aksi */
+tr[data-guru-hash]:not([data-guru-name="totok-warsito"]):not([data-guru-name="siti-aminah"]):not([data-guru-name="budi-santoso"]):not([data-guru-name="joko-susanto"]):not([data-guru-name="heri-kristianto"]) .btn-outline-primary {
+    border-color: hsl(var(--hue), 70%, 35%) !important;
+    color: hsl(var(--hue), 70%, 35%) !important;
+}
+
+tr[data-guru-hash]:not([data-guru-name="totok-warsito"]):not([data-guru-name="siti-aminah"]):not([data-guru-name="budi-santoso"]):not([data-guru-name="joko-susanto"]):not([data-guru-name="heri-kristianto"]) .btn-outline-primary:hover {
+    background-color: hsl(var(--hue), 70%, 35%) !important;
+    color: white !important;
+}
+
+/* ============================================
+   STYLE UMUM UNTUK FULL ROW COLOR
+   ============================================ */
+
+.jadwal-row {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Border kiri yang tebal untuk setiap row */
+.jadwal-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 2px 0 0 2px;
+}
+
+/* Style untuk badge hari */
+.hari-badge {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    display: inline-block;
+}
+
+/* Warna hari tetap seperti sebelumnya */
+.hari-senin { background-color: rgba(67, 97, 238, 0.15); color: #4361ee; }
+.hari-selasa { background-color: rgba(58, 12, 163, 0.15); color: #3a0ca3; }
+.hari-rabu { background-color: rgba(114, 9, 183, 0.15); color: #7209b7; }
+.hari-kamis { background-color: rgba(76, 201, 240, 0.15); color: #4cc9f0; }
+.hari-jumat { background-color: rgba(247, 37, 133, 0.15); color: #f72585; }
+
+/* Badge guru */
+.guru-badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+}
+
+.guru-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.guru-badge i {
+    font-size: 0.9rem;
+}
+
+/* Time badge */
+.time-badge {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: #6c757d;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    display: inline-block;
+    margin-top: 3px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .guru-badge {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+    
+    .hari-badge {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+    }
+}
+
+/* Animasi hover yang lebih smooth */
+.table-jadwal tbody tr {
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.table-jadwal tbody tr:hover {
+    transform: scale(1.002);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+/* Z-stacking untuk border kiri */
+.table-jadwal tbody tr td:first-child {
+    position: relative;
+}
+/* ============================================
+   STYLE UMUM
+   ============================================ */
+
+.guru-badge {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.guru-badge i {
+    font-size: 0.875rem;
+}
+
+/* Highlight row sesuai warna guru */
+tr[data-guru-name] {
+    transition: all 0.2s ease;
+}
+
+tr[data-guru-name]:hover {
+    background-color: rgba(0,0,0,0.02);
+}
+
+/* Tooltip untuk nama guru */
+.guru-name {
+    position: relative;
+    cursor: pointer;
+}
+
+.guru-name:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-bottom: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .guru-badge {
+        padding: 3px 8px;
+        font-size: 0.7rem;
+    }
+}

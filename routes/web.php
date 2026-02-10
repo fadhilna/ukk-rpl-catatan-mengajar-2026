@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\GuruLaporanController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\Admin\JadwalController;
 
 // ========================
 // HELPER FUNCTIONS
@@ -413,78 +414,49 @@ Route::prefix('admin/kelas')->group(function () {
 // ========================
 // ROUTE JADWAL (TAMBAHKAN NAMA ROUTE)
 // ========================
-Route::get('/admin/jadwal', function () {
+// ========================
+// ROUTE JADWAL (Menggunakan Controller - Simpel Version)
+// ========================
+Route::get('/admin/jadwal', function() {
     if (!session('logged_in') || session('peran') != 'admin') {
         return redirect('/login')->with('error', 'Akses ditolak');
     }
     
-    $jadwal = DB::table('jadwal_mengajar as j')
-        ->join('guru as g', 'j.guru_id', '=', 'g.id')
-        ->join('kelas as k', 'j.kelas_id', '=', 'k.id')
-        ->join('master_jam_sekolah as m', 'j.jam_ke_id', '=', 'm.id')
-        ->select('j.*', 'g.nama as nama_guru', 'k.nama_kelas', 
-                'm.jam_ke', 'm.waktu_mulai', 'm.waktu_selesai')
-        ->orderByRaw("FIELD(j.hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu')")
-        ->orderBy('m.jam_ke')
-        ->get();
-    
-    // Ambil data untuk form tambah
-    $gurus = DB::table('guru')->orderBy('nama')->get();
-    $kelas = DB::table('kelas')->orderBy('nama_kelas')->get();
-    $jam_sekolah = DB::table('master_jam_sekolah')->orderBy('jam_ke')->get();
-    
-    return view('admin.jadwal.index', compact('jadwal', 'gurus', 'kelas', 'jam_sekolah'));
-})->name('admin.jadwal'); // ⭐ TAMBAH NAMA ROUTE
+    return app()->make(JadwalController::class)->index();
+})->name('admin.jadwal');
 
-// Route untuk simpan jadwal baru - TAMBAH NAMA ROUTE
-Route::post('/admin/jadwal/store', function () {
+Route::post('/admin/jadwal/store', function() {
     if (!session('logged_in') || session('peran') != 'admin') {
         return redirect('/login')->with('error', 'Akses ditolak');
     }
     
-    // Validasi data
-    $request = request();
-    
-    // Cek data yang diperlukan
-    if (!$request->guru_id || !$request->kelas_id || !$request->jam_ke_id || !$request->hari || !$request->mata_pelajaran) {
-        return back()->with('error', 'Semua field wajib diisi!');
-    }
-    
-    // Cek apakah jadwal sudah ada
-    $exists = DB::table('jadwal_mengajar')
-        ->where('guru_id', $request->guru_id)
-        ->where('hari', $request->hari)
-        ->where('jam_ke_id', $request->jam_ke_id)
-        ->exists();
-    
-    if ($exists) {
-        return back()->with('error', 'Guru sudah memiliki jadwal di hari dan jam tersebut!');
-    }
-    
-    DB::table('jadwal_mengajar')->insert([
-        'guru_id' => $request->guru_id,
-        'kelas_id' => $request->kelas_id,
-        'jam_ke_id' => $request->jam_ke_id,
-        'hari' => $request->hari,
-        'mata_pelajaran' => $request->mata_pelajaran,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
-    
-    // Log aktivitas
-    try {
-        DB::table('log_aktivitas')->insert([
-            'pengguna_id' => session('user_id'),
-            'aktivitas' => 'Menambah jadwal mengajar: ' . $request->mata_pelajaran,
-            'created_at' => now()
-        ]);
-    } catch (Exception $e) {
-        // Skip jika error
-    }
-    
-    return redirect('/admin/jadwal')->with('success', 'Jadwal berhasil ditambahkan!');
-})->name('admin.jadwal.store'); // ⭐ TAMBAH NAMA ROUTE
+    $request = request(); // Ambil request
+    return app()->make(JadwalController::class)->store($request);
+})->name('admin.jadwal.store');
 
+// PERBAIKAN: TAMBAHKAN }); untuk menutup route pertama
+Route::post('/admin/jadwal/{id}/delete', function($id) {
+    if (!session('logged_in') || session('peran') != 'admin') {
+        return redirect('/login')->with('error', 'Akses ditolak');
+    }
+    
+    // Logika delete di sini (seharusnya panggil controller)
+    // Contoh:
+    // \App\Models\Jadwal::find($id)->delete();
+    
+    return redirect('/admin/jadwal')->with('success', 'Jadwal berhasil dihapus');
+}); // ✅ TAMBAHKAN INI untuk menutup closure
+
+// Jadwal Routes
+Route::prefix('admin/jadwal')->group(function () {
+    Route::get('/', [JadwalController::class, 'index'])->name('admin.jadwal');
+    Route::post('/store', [JadwalController::class, 'store'])->name('admin.jadwal.store');
+    
+    // Tambahkan route ini:
+    Route::get('/{id}/edit', [JadwalController::class, 'edit'])->name('admin.jadwal.edit');
+    Route::put('/{id}/update', [JadwalController::class, 'update'])->name('admin.jadwal.update');
+    Route::delete('/{id}/delete', [JadwalController::class, 'destroy'])->name('admin.jadwal.destroy');
+});
 // ========================
 // DASHBOARD GURU
 // ========================
@@ -560,7 +532,6 @@ Route::get('/guru/kegiatan/create', function() {
         return redirect('/login');
     }
     
-    // Ambil data guru
     $guru = DB::table('guru')
         ->where('pengguna_id', session('user_id'))
         ->first();
@@ -569,26 +540,63 @@ Route::get('/guru/kegiatan/create', function() {
         return redirect('/login')->with('error', 'Data guru tidak ditemukan');
     }
     
-    // Ambil jadwal mengajar guru
-    $jadwal = DB::table('jadwal_mengajar as jm')
-        ->join('kelas as k', 'jm.kelas_id', '=', 'k.id')
-        ->join('master_jam_sekolah as mjs', 'jm.jam_ke_id', '=', 'mjs.id')
-        ->where('jm.guru_id', $guru->id)
-        ->orderByRaw("FIELD(jm.hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu')")
-        ->orderBy('mjs.waktu_mulai')
-        ->select('jm.*', 'k.nama_kelas', 'mjs.jam_ke', 'mjs.waktu_mulai', 'mjs.waktu_selesai')
-        ->get();
-    
-    // ⭐ TAMBAHKAN: Hari ini untuk default tanggal
+    $tanggal_hari_ini = date('Y-m-d');
     $hari_ini = date('N');
     $hari_indonesia = ['', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     $hari_nama = $hari_indonesia[$hari_ini];
     
+    // ============= PERBAIKAN UTAMA =============
+    // 1. Ambil KELAS yang SUDAH diabsen hari ini
+    $kelas_sudah_absen = DB::table('kegiatan_mengajar as km')
+        ->join('jadwal_mengajar as jm', 'km.jadwal_id', '=', 'jm.id')
+        ->join('kelas as k', 'jm.kelas_id', '=', 'k.id')
+        ->where('jm.guru_id', $guru->id)
+        ->whereDate('km.tanggal', $tanggal_hari_ini)
+        ->select('k.id as kelas_id', 'k.nama_kelas', DB::raw('COUNT(*) as jumlah_kegiatan'))
+        ->groupBy('k.id', 'k.nama_kelas')
+        ->get();
+    
+    // 2. Ambil ID kelas yang sudah diabsen
+    $kelas_sudah_absen_ids = $kelas_sudah_absen->pluck('kelas_id')->toArray();
+    
+    // 3. Ambil jadwal HANYA untuk kelas yang BELUM diabsen
+    $jadwal_tersedia = DB::table('jadwal_mengajar as jm')
+        ->join('kelas as k', 'jm.kelas_id', '=', 'k.id')
+        ->join('master_jam_sekolah as mjs', 'jm.jam_ke_id', '=', 'mjs.id')
+        ->where('jm.guru_id', $guru->id)
+        ->where('jm.hari', $hari_nama) // ⭐ FILTER HARI INI
+        ->whereNotIn('jm.kelas_id', $kelas_sudah_absen_ids) // ⭐ FILTER KELAS YANG BELUM ABSEN
+        ->orderBy('mjs.waktu_mulai')
+        ->select('jm.*', 'k.nama_kelas', 'mjs.jam_ke', 'mjs.waktu_mulai', 'mjs.waktu_selesai')
+        ->get();
+    
+    // ============= ALTERNATIF: Jika mau tampilkan semua jadwal tapi disable yang sudah diabsen =============
+    /*
+    // Ambil semua jadwal hari ini
+    $semua_jadwal = DB::table('jadwal_mengajar as jm')
+        ->join('kelas as k', 'jm.kelas_id', '=', 'k.id')
+        ->join('master_jam_sekolah as mjs', 'jm.jam_ke_id', '=', 'mjs.id')
+        ->where('jm.guru_id', $guru->id)
+        ->where('jm.hari', $hari_nama)
+        ->orderBy('mjs.waktu_mulai')
+        ->select('jm.*', 'k.nama_kelas', 'mjs.jam_ke', 'mjs.waktu_mulai', 'mjs.waktu_selesai')
+        ->get();
+    
+    // Tandai jadwal yang kelasnya sudah diabsen
+    foreach ($semua_jadwal as $j) {
+        $j->kelas_sudah_absen = in_array($j->kelas_id, $kelas_sudah_absen_ids);
+    }
+    
+    $jadwal_tersedia = $semua_jadwal;
+    */
+    
     return view('guru.kegiatan.create', [
         'guru' => $guru,
-        'jadwal' => $jadwal,
-        'hari_nama' => $hari_nama, // ⭐ INI YANG DIBUTUHKAN
-        'tanggal_sekarang' => date('Y-m-d') // ⭐ Juga tambahkan ini
+        'jadwal' => $jadwal_tersedia,
+        'hari_nama' => $hari_nama,
+        'tanggal_sekarang' => $tanggal_hari_ini,
+        'kelas_sudah_absen' => $kelas_sudah_absen,
+        'kelas_sudah_absen_ids' => $kelas_sudah_absen_ids // ⭐ TAMBAHKAN INI
     ]);
 })->name('guru.kegiatan.create');
 
@@ -1317,6 +1325,138 @@ Route::get('/debug-get-siswa/{id}', function($id) {
     echo "</pre>";
     exit;
 });
+// API untuk cek kegiatan kelas
+Route::get('/cek-kegiatan-kelas', function() {
+    $jadwal_id = request('jadwal_id');
+    $tanggal = request('tanggal', date('Y-m-d'));
+    
+    // Cek session 
+    if (!session('logged_in') || session('peran') != 'guru') {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+    
+    // Dapatkan info jadwal
+    $jadwal = DB::table('jadwal_mengajar as jm')
+        ->join('kelas as k', 'jm.kelas_id', '=', 'k.id')
+        ->where('jm.id', $jadwal_id)
+        ->select('jm.kelas_id', 'k.nama_kelas')
+        ->first();
+    
+    if (!$jadwal) {
+        return response()->json(['error' => 'Jadwal tidak ditemukan']);
+    }
+    
+    // Hitung kegiatan untuk kelas ini hari ini (FIXED QUERY)
+    $jumlah_kegiatan = DB::table('kegiatan_mengajar as km')
+        ->join('jadwal_mengajar as jm', 'km.jadwal_id', '=', 'jm.id')
+        ->where('jm.kelas_id', $jadwal->kelas_id)
+        ->whereDate('km.tanggal', $tanggal)
+        ->count();
+    
+    return response()->json([
+        'success' => true,
+        'kelas_id' => $jadwal->kelas_id,
+        'nama_kelas' => $jadwal->nama_kelas,
+        'jumlah' => $jumlah_kegiatan,
+        'sudah_absen' => $jumlah_kegiatan > 0,
+        'tanggal' => $tanggal
+    ]);
+})->name('api.cek.kegiatan.kelas');
+// API: Get siswa by kelas
+Route::get('/api/get-siswa-by-kelas/{kelas_id}', function($kelas_id) {
+    if (!session('logged_in') || session('peran') != 'guru') {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+    
+    $siswa = DB::table('siswa')
+        ->where('kelas_id', $kelas_id)
+        ->orderBy('nama')
+        ->select('id', 'nis', 'nama')
+        ->get();
+    
+    return response()->json([
+        'success' => true,
+        'siswa' => $siswa,
+        'count' => $siswa->count()
+    ]);
+});
+
+// Store kegiatan baru (sistem per kelas)
+Route::post('/guru/kegiatan/store-new', function() {
+    if (!session('logged_in') || session('peran') != 'guru') {
+        return redirect('/login');
+    }
+    
+    $request = request();
+    
+    // Validasi
+    $request->validate([
+        'kelas_id' => 'required|exists:kelas,id',
+        'jadwal_id' => 'required|array',
+        'jadwal_id.*' => 'exists:jadwal_mengajar,id',
+        'materi' => 'required|string',
+        'catatan' => 'required|string',
+        'tanggal' => 'required|date',
+        'kehadiran' => 'required|array'
+    ]);
+    
+    $guru = DB::table('guru')
+        ->where('pengguna_id', session('user_id'))
+        ->first();
+    
+    // Cek apakah kelas sudah diabsen hari ini
+    $sudah_absen = DB::table('kegiatan_mengajar')
+        ->where('kelas_id', $request->kelas_id)
+        ->whereDate('tanggal', $request->tanggal)
+        ->exists();
+    
+    if ($sudah_absen) {
+        return back()->with('error', 'Kelas ini sudah diabsen hari ini!');
+    }
+    
+    // Ambil jadwal_id pertama dari array
+    $jadwal_id = $request->jadwal_id[$request->kelas_id] ?? null;
+    
+    if (!$jadwal_id) {
+        return back()->with('error', 'Pilih mata pelajaran!');
+    }
+    
+    DB::beginTransaction();
+    
+    try {
+        // 1. Simpan kegiatan
+        $kegiatan_id = DB::table('kegiatan_mengajar')->insertGetId([
+            'jadwal_id' => $jadwal_id,
+            'kelas_id' => $request->kelas_id, // ⭐ INI YANG BARU
+            'tanggal' => $request->tanggal,
+            'materi' => $request->materi,
+            'catatan' => $request->catatan,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        
+        // 2. Simpan kehadiran siswa
+        foreach ($request->kehadiran as $siswa_id => $status) {
+            DB::table('kehadiran_siswa')->insert([
+                'kegiatan_id' => $kegiatan_id,
+                'siswa_id' => $siswa_id,
+                'status' => $status,
+                'keterangan' => null,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+        
+        DB::commit();
+        
+        return redirect('/guru/kegiatan')->with('success', 
+            'Absen kelas berhasil disimpan! (Sistem 1x absen per kelas per hari)');
+            
+    } catch (\Exception $e) {
+        DB::rollback();
+        return back()->with('error', 'Gagal menyimpan: ' . $e->getMessage());
+    }
+})->name('guru.kegiatan.store-new');
 
 // ========================
 // FALLBACK ROUTE
@@ -1378,9 +1518,16 @@ Route::get('/debug-get-siswa/{id}', function($id) {
         ], 500);
     }
 });
-// Tambahkan di web.php
 Route::get('/test-detail/{id}', function($id) {
     $url = route('guru.kegiatan.detail', $id);
     return "Route URL: " . $url . "<br>" .
            "Akses langsung: <a href='$url'>Klik disini</a>";
 });
+// Route untuk multi-jam
+Route::post('/admin/jadwal/store-multi-jam', [JadwalController::class, 'storeMultiJam'])
+    ->name('admin.jadwal.store-multi-jam');
+
+// API Routes
+Route::get('/api/jam-sekolah', [JadwalController::class, 'getJamSekolah']);
+Route::get('/api/jadwal-terpakai', [JadwalController::class, 'getJadwalTerpakai']);
+Route::get('/api/jadwal-kelas', [JadwalController::class, 'getJadwalKelas']);
