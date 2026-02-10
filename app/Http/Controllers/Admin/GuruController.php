@@ -206,4 +206,51 @@ class GuruController extends Controller
             ], 500);
         }
     }
+    // Di controller jadwal (bisa di DashboardController atau JadwalController)
+private function getGuruColor($namaGuru)
+{
+    // Mapping warna berdasarkan nama guru
+    $guruColors = [
+        'Totok Warsito' => 'primary',
+        'Totok warsito' => 'primary', // jika ada case sensitive
+        'Totok' => 'primary',
+        'Siti Aminah' => 'success',
+        'Siti' => 'success',
+        'Budi Santoso' => 'warning',
+        'Budi' => 'warning',
+        'Joko Susanto' => 'info',
+        'Joko' => 'info',
+        'Heri Kristianto' => 'danger',
+        'Heri' => 'danger',
+        'Jamput' => 'secondary',
+        'AE' => 'purple',
+        'Raasid' => 'teal',
+    ];
+    
+    // Cari warna berdasarkan nama lengkap atau sebagian
+    foreach ($guruColors as $nama => $warna) {
+        if (stripos($namaGuru, $nama) !== false) {
+            return $warna;
+        }
+    }
+    
+    // Default color jika tidak ditemukan
+    return $this->generateColorFromName($namaGuru);
+}
+
+// Function untuk generate warna konsisten dari nama
+private function generateColorFromName($name)
+{
+    $colors = [
+        'primary', 'success', 'warning', 'info', 
+        'danger', 'secondary', 'purple', 'teal',
+        'indigo', 'pink', 'orange', 'cyan'
+    ];
+    
+    // Gunakan hash nama untuk menentukan warna
+    $hash = crc32($name);
+    $index = abs($hash) % count($colors);
+    
+    return $colors[$index];
+}
 }

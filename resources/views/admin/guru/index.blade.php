@@ -72,19 +72,97 @@
     </div>
 </nav>
 
+
 <!-- KONTEN GURU (KONTEN ASLI TANPA PERUBAHAN) -->
 <div class="container-fluid px-4 pt-4">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="mb-1">
-                <i class="bi bi-people"></i> Data Guru
-            </h3>
-            <p class="text-muted mb-0">Manajemen data guru sekolah</p>
+      
+    
+    </div>
+     <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-14">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="bi bi-person-plus"></i> Tambah Data Guru Baru
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                        @endif
+                        
+                        <form method="POST" action="{{ route('admin.guru.store') }}" onsubmit="return validasiForm()">
+                            @csrf
+                            
+                            <h5 class="mb-3">Data Pribadi</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nama Guru *</label>
+                                    <input type="text" name="nama" class="form-control" required 
+                                           placeholder="Nama lengkap guru">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">NIP</label>
+                                    <input type="text" name="nip" class="form-control" 
+                                           placeholder="Nomor Induk Pegawai">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" 
+                                           placeholder="email@sekolah.sch.id">
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            <h5 class="mb-3">Data Login</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Username *</label>
+                                    <input type="text" name="username" class="form-control" required 
+                                           placeholder="Username untuk login">
+                                    <div class="form-text">Minimal 3 karakter</div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Password *</label>
+                                    <input type="password" name="password" id="password" 
+                                           class="form-control" required minlength="6">
+                                    <div class="form-text">Minimal 6 karakter</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Konfirmasi Password *</label>
+                                    <input type="password" name="password_confirmation" 
+                                           id="password_confirmation" class="form-control" required>
+                                    <div class="form-text">Harus sama dengan password</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save"></i> Simpan Data Guru
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>
+                            <i class="bi bi-info-circle"></i> 
+                            Data yang bertanda * wajib diisi. Password akan dienkripsi MD5.
+                        </small>
+                    </div>
+                </div>
+            </div>
         </div>
-        <a href="/admin/guru/create" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Tambah Guru
-        </a>
     </div>
 
     @if(session('success'))
@@ -98,6 +176,13 @@
         {{ session('error') }}
     </div>
     @endif
+
+      <div>
+            <h3 class="mb-1">
+                <i class="bi bi-people"></i> Data Guru
+            </h3>
+            <p class="text-muted mb-0">Manajemen data guru sekolah</p>
+        </div>
 
     <!-- Tabel Guru -->
     <div class="card">

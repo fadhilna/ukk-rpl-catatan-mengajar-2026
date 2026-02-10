@@ -1,15 +1,18 @@
 @extends('layouts.admin')
 
 @section('title', 'Dashboard Admin')
-
+ <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
 @section('content')
 <!-- NAVBAR DENGAN MENU -->
 <nav class="navbar navbar-glow navbar-expand-lg shadow">
     <div class="container-fluid px-4">
-        <a class="navbar-brand fw-bold text-white" href="/admin">
-            <i class="bi bi-laptop me-2"></i>
-            <span class="d-none d-md-inline">UKK RPL Admin</span>
-        </a>
+       <a class="navbar-brand fw-bold text-white" href="/admin">
+    <img src="{{ asset('image-removebg-preview.png') }}" 
+         alt="Logo SMK" 
+         style="width: 35px; height: 35px; margin-right: 10px;">
+    <span class="d-none d-md-inline">UKK RPL Admin</span>
+</a>
         
         <!-- Menu untuk desktop -->
         <div class="d-none d-lg-flex ms-4">
@@ -61,8 +64,9 @@
                         </a>
                     </li>
                     <li><hr class="dropdown-divider"></li>
+                   <!-- Di dropdown menu profil -->
                     <li>
-                        <a class="dropdown-item" href="/logout">
+                        <a class="dropdown-item logout-animated" href="/logout" id="dropdownLogoutBtn">
                             <i class="bi bi-box-arrow-right me-2"></i>Logout
                         </a>
                     </li>
@@ -198,7 +202,7 @@
                         <i class="bi bi-person-badge text-warning fs-4"></i>
                     </div>
                 </div>
-                <a href="#" class="stretched-link"></a>
+                <a href="/admin/siswa" class="stretched-link"></a>
             </div>
         </div>
         
@@ -236,7 +240,7 @@
                         <i class="bi bi-journal-text text-danger fs-4"></i>
                     </div>
                 </div>
-                <a href="/guru/kegiatan" class="stretched-link"></a>
+                <a href="/admin/laporan-kegiatan" class="stretched-link"></a>
             </div>
         </div>
         
@@ -255,7 +259,7 @@
                         <i class="bi bi-person text-secondary fs-4"></i>
                     </div>
                 </div>
-                <a href="#" class="stretched-link"></a>
+                <a href="/guru/kegiatan" class="stretched-link"></a>
             </div>
         </div>
     </div>
@@ -303,12 +307,18 @@
                                         </div>
                                     </a>
                                 </div>
+                               <!-- Modifikasi kode Quick Actions - Ganti hanya tombol logout -->
                                 <div class="col-md-3 col-6">
-                                    <a href="/logout" class="btn btn-danger w-100 py-3 h-100">
-                                        <div class="text-center">
+                                    <a href="/logout" class="btn btn-danger w-100 py-3 h-100 btn-logout-animated LogoutButton" 
+                                    id="animatedLogoutBtn">
+                                        <div class="text-center position-relative">
                                             <i class="bi bi-box-arrow-right fs-2 mb-2"></i>
                                             <div class="fw-semibold">Logout</div>
                                             <small class="opacity-75">Keluar sistem</small>
+                                           <div class="falling__figure" style="left: 10px;"></div>
+                                            <div class="falling__figure" style="left: 30px; animation-delay: 50ms;"></div>
+                                            <div class="falling__figure" style="left: 50px; animation-delay: 100ms;"></div>
+                                            <div class="falling__figure" style="left: 70px; animation-delay: 150ms;"></div>
                                         </div>
                                     </a>
                                 </div>
@@ -616,12 +626,71 @@
     }
     
     .btn {
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
     }
     
     .btn:hover {
         transform: translateY(-2px);
     }
+    /* CSS Animasi Logout Button */
+.LogoutButton {
+    position: relative;
+    overflow: hidden;
+}
+
+.falling__figure {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ff4757;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    bottom: 100%;
+    animation: spin 100ms infinite linear;
+    --figure-duration: 500;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.LogoutButton--light .button__text {
+    color: #f2f2f2;
+}
+
+.LogoutButton--light .cursor,
+.InputButton--light .cursor {
+    fill: #f2f2f2;
+}
+
+.btn-logout-animated {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-logout-animated:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(255, 71, 87, 0.3) !important;
+}
+
+.btn-logout-animated:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shine 0.5s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
 </style>
 @endsection
 
@@ -638,6 +707,30 @@ $(document).ready(function() {
             month: 'long', 
             day: 'numeric' 
         };
+            /* Dropdown logout animation */
+    .logout-animated {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .logout-animated:hover {
+        padding-left: 20px !important;
+    }
+
+    .logout-animated:hover::after {
+        content: '→';
+        position: absolute;
+        right: 15px;
+        opacity: 0;
+        animation: slideRight 0.1s forwards;
+    }
+
+    @keyframes slideRight {
+        to {
+            opacity: 1;
+            transform: translateX(-5px);
+        }
+    }
         
         const dateStr = now.toLocaleDateString('id-ID', options);
         const timeStr = now.toLocaleTimeString('id-ID', { 
@@ -745,5 +838,104 @@ $(document).ready(function() {
         }
     });
 });
+// Animasi tombol logout
+$('#animatedLogoutBtn').hover(
+    function() {
+        const $btn = $(this);
+        const figures = $btn.find('.falling__figure');
+        
+        figures.each(function(index) {
+            const $figure = $(this);
+            const duration = 500 + (index * 100);
+            
+            $figure.css({
+                '--figure-duration': duration,
+                'opacity': '1',
+                'bottom': '100%',
+                'transform': 'rotate(0deg)'
+            });
+            
+            setTimeout(() => {
+                $figure.css({
+                    'bottom': '-20px',
+                    'transform': 'rotate(360deg)',
+                    'opacity': '0'
+                });
+            }, 10);
+            
+            setTimeout(() => {
+                $figure.css({
+                    'opacity': '0',
+                    'bottom': '100%',
+                    'transform': 'rotate(0deg)'
+                });
+            }, duration);
+        });
+    },
+    function() {
+        $(this).find('.falling__figure').css('opacity', '0');
+    }
+);
+
+// Efek klik logout
+$('#animatedLogoutBtn').click(function(e) {
+    e.preventDefault();
+    const $btn = $(this);
+    const url = $btn.attr('href');
+    
+    // Tambahkan efek klik
+    $btn.addClass('active');
+    
+    // Animasi partikel
+    for(let i = 0; i < 8; i++) {
+        createLogoutParticle($btn, i);
+    }
+    
+    // Tunggu animasi selesai sebelum redirect
+    setTimeout(() => {
+        window.location.href = url;
+    }, 800);
+    
+    return false;
+});
+
+function createLogoutParticle($btn, index) {
+    const $particle = $('<div class="logout-particle"></div>');
+    $btn.append($particle);
+    
+    const size = 5 + Math.random() * 10;
+    const angle = (index / 8) * Math.PI * 2;
+    const distance = 50 + Math.random() * 50;
+    const duration = 600 + Math.random() * 400;
+    
+    $particle.css({
+        'position': 'absolute',
+        'width': size + 'px',
+        'height': size + 'px',
+        'background': 'linear-gradient(135deg, #ff6b6b, #ff4757)',
+        'border-radius': '50%',
+        'top': '50%',
+        'left': '50%',
+        'transform': 'translate(-50%, -50%)',
+        'opacity': '1',
+        'box-shadow': '0 0 10px rgba(255, 71, 87, 0.7)'
+    });
+    
+    setTimeout(() => {
+        $particle.css({
+            'top': '50% - ' + (Math.sin(angle) * distance) + 'px',
+            'left': '50% + ' + (Math.cos(angle) * distance) + 'px',
+            'opacity': '0',
+            'transform': 'translate(-50%, -50%) scale(0.5)'
+        });
+    }, 10);
+    
+    setTimeout(() => {
+        $particle.remove();
+    }, duration);
+}
+
+// Tambahkan CSS untuk partikel logout
+$('head').append('<style>.logout-particle { transition: all 0.5s cubic-bezier(0.7, 0.1, 1, 1); }</style>');
 </script>
 @endsection

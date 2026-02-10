@@ -3,6 +3,76 @@
 @section('title', 'Data Siswa')
 
 @section('content')
+<nav class="navbar navbar-glow navbar-expand-lg shadow">
+    <div class="container-fluid px-4">
+       <a class="navbar-brand fw-bold text-white" href="/admin">
+    <img src="{{ asset('image-removebg-preview.png') }}" 
+         alt="Logo SMK" 
+         style="width: 35px; height: 35px; margin-right: 10px;">
+    <span class="d-none d-md-inline">UKK RPL Admin</span>
+</a>
+        
+        <!-- Menu untuk desktop -->
+        <div class="d-none d-lg-flex ms-4">
+            <div class="navbar-nav">
+                <a class="nav-link text-white mx-2 {{ request()->is('admin') ? 'active' : '' }}" 
+                   href="/admin">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <a class="nav-link text-white mx-2 {{ request()->is('admin/guru*') ? 'active' : '' }}" 
+                   href="/admin/guru">
+                    <i class="bi bi-people me-1"></i> Guru
+                </a>
+                <a class="nav-link text-white mx-2 {{ request()->is('admin/kelas*') ? 'active' : '' }}" 
+                   href="/admin/kelas">
+                    <i class="bi bi-building me-1"></i> Kelas
+                </a>
+                <a class="nav-link text-white mx-2 {{ request()->is('admin/jadwal*') ? 'active' : '' }}" 
+                   href="/admin/jadwal">
+                    <i class="bi bi-calendar-week me-1"></i> Jadwal
+                </a>
+                <!-- MENU DATA SISWA -->
+                <a class="nav-link text-white mx-2 {{ request()->is('admin/siswa*') ? 'active' : '' }}" 
+                   href="/admin/siswa">
+                    <i class="bi bi-people-fill me-1"></i> Siswa
+                </a>
+            </div>
+        </div>
+        
+        <!-- Search & Profil -->
+        <div class="d-flex align-items-center">
+            <!-- Profil -->
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" 
+                   data-bs-toggle="dropdown">
+                    <div class="me-2">
+                        <div class="profile-img bg-light d-flex align-items-center justify-content-center">
+                            <i class="bi bi-person-fill text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="d-none d-md-block">
+                        <div class="fw-semibold">{{ session('username') ?? 'Admin' }}</div>
+                        <small class="opacity-75">Administrator</small>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <li>
+                        <a class="dropdown-item" href="/admin">
+                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                   <!-- Di dropdown menu profil -->
+                    <li>
+                        <a class="dropdown-item logout-animated" href="/logout" id="dropdownLogoutBtn">
+                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
