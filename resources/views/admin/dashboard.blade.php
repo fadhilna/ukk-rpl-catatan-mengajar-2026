@@ -152,116 +152,233 @@
                 <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center">
                         <h2 class="fw-bold">Dashboard</h2>
-                        <div class="search-bar-mobile d-lg-none">
-                            <div class="input-group search-group">
-                                <span class="input-group-text bg-transparent border-0">
-                                    <i class="bi bi-search text-secondary"></i>
-                                </span>
-                                <input type="text" class="form-control search-input" placeholder="Search Here...">
+                        <div class="d-flex align-items-center">
+                            <div id="serverTime" class="me-3 text-muted small">
+                                {{ date('l, d F Y H:i:s') }}
+                            </div>
+                            <div class="search-bar-mobile d-lg-none">
+                                <div class="input-group search-group">
+                                    <span class="input-group-text bg-transparent border-0">
+                                        <i class="bi bi-search text-secondary"></i>
+                                    </span>
+                                    <input type="text" class="form-control search-input" placeholder="Search Here...">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Stats Cards Modern -->
+            <!-- Stats Cards Modern - DATA REAL -->
             <div class="row mb-4">
-                <!-- FOLLOWS Card -->
+                <!-- TOTAL PENGGUNA Card -->
                 <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
                     <div class="stats-card-modern follows-card">
                         <div class="card-header">
-                            <h6 class="mb-0">FOLLOWS</h6>
-                            <div class="percentage">{{ $stats['total_pengguna'] ?? '25' }}%</div>
+                            <h6 class="mb-0">TOTAL PENGGUNA</h6>
+                            <div class="number">{{ $stats['total_pengguna'] ?? 0 }}</div>
                         </div>
                         <div class="card-body">
                             <p class="card-text text-muted">Total pengguna yang terdaftar dalam sistem</p>
-                            <div class="progress-stats">
-                                <div class="d-flex justify-content-between mb-1">
-                                    <small>Progress</small>
-                                    <small>{{ $stats['total_pengguna'] ?? '25' }}%</small>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <i class="bi bi-people-fill fs-4 text-primary"></i>
                                 </div>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: {{ $stats['total_pengguna'] ?? '25' }}%"></div>
+                                <div class="text-end">
+                                    <small class="text-success">
+                                        <i class="bi bi-arrow-up-circle me-1"></i>
+                                        {{ $stats['total_pengguna'] ?? 0 }} Pengguna
+                                    </small>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <small class="text-success">{{ $stats['total_pengguna'] ?? '30' }}% THIS MONTH</small>
+                            <a href="/admin/guru" class="small text-decoration-none">
+                                <i class="bi bi-eye me-1"></i>Lihat Detail
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- VIEWS Card -->
+                <!-- TOTAL KEGIATAN Card -->
                 <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
                     <div class="stats-card-modern views-card">
                         <div class="card-header">
-                            <h6 class="mb-0">VIEWS</h6>
-                            <div class="percentage">{{ $stats['total_kegiatan'] ?? '30' }}%</div>
+                            <h6 class="mb-0">TOTAL KEGIATAN</h6>
+                            <div class="number">{{ $stats['total_kegiatan'] ?? 0 }}</div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text text-muted">Total kegiatan yang tercatat dalam sistem</p>
-                            <div class="progress-stats">
-                                <div class="d-flex justify-content-between mb-1">
-                                    <small>Progress</small>
-                                    <small>{{ $stats['total_kegiatan'] ?? '30' }}%</small>
+                            <p class="card-text text-muted">Total kegiatan mengajar yang tercatat</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <i class="bi bi-calendar-check fs-4 text-info"></i>
                                 </div>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: {{ $stats['total_kegiatan'] ?? '30' }}%"></div>
+                                <div class="text-end">
+                                    <small class="text-success">
+                                        <i class="bi bi-clipboard-check me-1"></i>
+                                        {{ $stats['total_kegiatan'] ?? 0 }} Kegiatan
+                                    </small>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <small class="text-success">{{ $stats['total_kegiatan'] ?? '50' }}% THIS MONTH</small>
+                            <a href="/admin/laporan/kegiatan" class="small text-decoration-none">
+                                <i class="bi bi-eye me-1"></i>Lihat Laporan
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- SCORE Card -->
+                <!-- TOTAL GURU Card -->
                 <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
                     <div class="stats-card-modern score-card">
                         <div class="card-header">
-                            <h6 class="mb-0">SCORE</h6>
-                            <div class="percentage">{{ $stats['total_guru'] ?? '50' }}%</div>
+                            <h6 class="mb-0">TOTAL GURU</h6>
+                            <div class="number">{{ $stats['total_guru'] ?? 0 }}</div>
                         </div>
                         <div class="card-body">
                             <p class="card-text text-muted">Total guru yang aktif dalam sistem</p>
-                            <div class="progress-stats">
-                                <div class="d-flex justify-content-between mb-1">
-                                    <small>Progress</small>
-                                    <small>{{ $stats['total_guru'] ?? '50' }}%</small>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <i class="bi bi-person-badge fs-4 text-warning"></i>
                                 </div>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: {{ $stats['total_guru'] ?? '50' }}%"></div>
+                                <div class="text-end">
+                                    <small class="text-success">
+                                        <i class="bi bi-person-check me-1"></i>
+                                        {{ $stats['total_guru'] ?? 0 }} Guru
+                                    </small>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <small class="text-success">{{ $stats['total_guru'] ?? '60' }}% THIS MONTH</small>
+                            <a href="/admin/guru" class="small text-decoration-none">
+                                <i class="bi bi-eye me-1"></i>Lihat Daftar
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- SUBSCRIPTIONS Card -->
+                <!-- TOTAL SISWA Card -->
                 <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
                     <div class="stats-card-modern subscriptions-card">
                         <div class="card-header">
-                            <h6 class="mb-0">SUBSCRIPTIONS</h6>
-                            <div class="percentage">{{ $stats['total_siswa'] ?? '75' }}%</div>
+                            <h6 class="mb-0">TOTAL SISWA</h6>
+                            <div class="number">{{ $stats['total_siswa'] ?? 0 }}</div>
                         </div>
                         <div class="card-body">
                             <p class="card-text text-muted">Total siswa yang terdaftar dalam sistem</p>
-                            <div class="progress-stats">
-                                <div class="d-flex justify-content-between mb-1">
-                                    <small>Progress</small>
-                                    <small>{{ $stats['total_siswa'] ?? '75' }}%</small>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <i class="bi bi-people fs-4 text-success"></i>
                                 </div>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: {{ $stats['total_siswa'] ?? '75' }}%"></div>
+                                <div class="text-end">
+                                    <small class="text-success">
+                                        <i class="bi bi-person-plus me-1"></i>
+                                        {{ $stats['total_siswa'] ?? 0 }} Siswa
+                                    </small>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <small class="text-success">{{ $stats['total_siswa'] ?? '60' }}% THIS MONTH</small>
+                            <a href="/admin/siswa" class="small text-decoration-none">
+                                <i class="bi bi-eye me-1"></i>Lihat Daftar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Stats Cards -->
+            <div class="row mb-4">
+                <!-- TOTAL KELAS Card -->
+                <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
+                    <div class="stats-card-modern">
+                        <div class="card-header" style="border-bottom: 3px solid #4361ee;">
+                            <h6 class="mb-0">TOTAL KELAS</h6>
+                            <div class="number" style="color: #4361ee;">{{ $stats['total_kelas'] ?? 0 }}</div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-muted">Total kelas yang terdaftar</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <i class="bi bi-building fs-4" style="color: #4361ee;"></i>
+                                </div>
+                                <div class="text-end">
+                                    <a href="/admin/kelas" class="btn btn-sm btn-outline-primary">
+                                        Kelola
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOTAL JADWAL Card -->
+                <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
+                    <div class="stats-card-modern">
+                        <div class="card-header" style="border-bottom: 3px solid #4cc9f0;">
+                            <h6 class="mb-0">TOTAL JADWAL</h6>
+                            <div class="number" style="color: #4cc9f0;">{{ $stats['total_jadwal'] ?? 0 }}</div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-muted">Total jadwal mengajar</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <i class="bi bi-calendar-week fs-4" style="color: #4cc9f0;"></i>
+                                </div>
+                                <div class="text-end">
+                                    <a href="/admin/jadwal" class="btn btn-sm btn-outline-info">
+                                        Kelola
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STATISTIK BULAN INI -->
+                <div class="col-xl-6 col-lg-12 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0">Statistik Bulan Ini</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                @php
+                                    $bulanIni = date('m');
+                                    $tahunIni = date('Y');
+                                    
+                                    // Hitung kegiatan bulan ini (contoh, bisa disesuaikan)
+                                    $kegiatanBulanIni = DB::table('kegiatan_mengajar')
+                                        ->whereMonth('tanggal', $bulanIni)
+                                        ->whereYear('tanggal', $tahunIni)
+                                        ->count();
+                                        
+                                    $kehadiranBulanIni = DB::table('kehadiran_siswa')
+                                        ->join('kegiatan_mengajar', 'kehadiran_siswa.kegiatan_id', '=', 'kegiatan_mengajar.id')
+                                        ->whereMonth('kegiatan_mengajar.tanggal', $bulanIni)
+                                        ->whereYear('kegiatan_mengajar.tanggal', $tahunIni)
+                                        ->count();
+                                @endphp
+                                <div class="col-3">
+                                    <div class="p-3 rounded" style="background: rgba(67, 97, 238, 0.1);">
+                                        <h3 class="mb-0">{{ $kegiatanBulanIni }}</h3>
+                                        <small>Kegiatan</small>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="p-3 rounded" style="background: rgba(76, 201, 240, 0.1);">
+                                        <h3 class="mb-0">{{ $kehadiranBulanIni }}</h3>
+                                        <small>Kehadiran</small>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="p-3 rounded" style="background: rgba(247, 37, 133, 0.1);">
+                                        <h3 class="mb-0">{{ date('F Y') }}</h3>
+                                        <small>Periode</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -269,138 +386,94 @@
 
             <!-- Charts and Additional Info -->
             <div class="row">
-                <!-- Left Column - Charts -->
+                <!-- Left Column - Data Real -->
                 <div class="col-lg-8 mb-4">
-                    <!-- VIEWS Chart -->
+                    <!-- DISTRIBUSI SISWA PER KELAS -->
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h5 class="mb-0">VIEWS</h5>
+                            <h5 class="mb-0">Distribusi Siswa per Kelas</h5>
                         </div>
                         <div class="card-body">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="circle-progress me-3" data-percentage="21">
-                                    <div class="circle-progress-inner">
-                                        <span>21%</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h6 class="mb-1">FOLLOWS</h6>
-                                    <p class="text-muted small mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam</p>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="circle-progress me-3" data-percentage="35">
-                                    <div class="circle-progress-inner">
-                                        <span>35%</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h6 class="mb-1">SCOPE</h6>
-                                    <p class="text-muted small mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam</p>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="circle-progress me-3" data-percentage="28">
-                                    <div class="circle-progress-inner">
-                                        <span>28%</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h6 class="mb-1">VIEWS</h6>
-                                    <p class="text-muted small mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SUBSCRIPTIONS Bar Chart -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5 class="mb-0">SUBSCRIPTIONS</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="bar-chart">
+                            @php
+                                $kelasSiswa = DB::table('kelas')
+                                    ->leftJoin('siswa', 'kelas.id', '=', 'siswa.kelas_id')
+                                    ->select('kelas.nama_kelas', DB::raw('COUNT(siswa.id) as jumlah_siswa'))
+                                    ->groupBy('kelas.id', 'kelas.nama_kelas')
+                                    ->orderBy('kelas.nama_kelas')
+                                    ->get();
+                                
+                                $maxSiswa = $kelasSiswa->max('jumlah_siswa') ?? 1;
+                            @endphp
+                            
+                            <div class="bar-chart-real">
                                 <div class="row text-center">
+                                    @foreach($kelasSiswa as $kelas)
                                     <div class="col">
                                         <div class="bar-wrapper">
-                                            <div class="bar" style="height: 30%"></div>
-                                            <small>SUN</small>
+                                            <div class="bar" 
+                                                 style="height: {{ ($kelas->jumlah_siswa / $maxSiswa) * 100 }}%;
+                                                        background: linear-gradient(to top, #4361ee, #4cc9f0);">
+                                            </div>
+                                            <small>{{ $kelas->nama_kelas }}</small>
+                                            <div class="mt-1">
+                                                <small class="fw-bold">{{ $kelas->jumlah_siswa }}</small>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="bar-wrapper">
-                                            <div class="bar" style="height: 60%"></div>
-                                            <small>MON</small>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="bar-wrapper">
-                                            <div class="bar" style="height: 45%"></div>
-                                            <small>TUE</small>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="bar-wrapper">
-                                            <div class="bar" style="height: 75%"></div>
-                                            <small>WED</small>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="bar-wrapper">
-                                            <div class="bar" style="height: 50%"></div>
-                                            <small>THU</small>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="bar-wrapper">
-                                            <div class="bar" style="height: 85%"></div>
-                                            <small>FRI</small>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="bar-wrapper">
-                                            <div class="bar" style="height: 40%"></div>
-                                            <small>SAT</small>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- EARNING Chart -->
+                    <!-- KEGIATAN TERBARU -->
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0">EARNING</h5>
+                            <h5 class="mb-0">Kegiatan Mengajar Terbaru</h5>
                         </div>
                         <div class="card-body">
-                            <div class="earning-chart">
-                                <div class="row text-center">
-                                    <div class="col-3">
-                                        <div class="earning-item">
-                                            <div class="earning-value">300</div>
-                                            <small>Guru</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="earning-item">
-                                            <div class="earning-value">600</div>
-                                            <small>Siswa</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="earning-item">
-                                            <div class="earning-value">350</div>
-                                            <small>Kelas</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="earning-item">
-                                            <div class="earning-value">400</div>
-                                            <small>Jadwal</small>
-                                        </div>
-                                    </div>
-                                </div>
+                            @php
+                                $kegiatanTerbaru = DB::table('kegiatan_mengajar as km')
+                                    ->join('jadwal_mengajar as jm', 'km.jadwal_id', '=', 'jm.id')
+                                    ->join('guru as g', 'jm.guru_id', '=', 'g.id')
+                                    ->join('kelas as k', 'jm.kelas_id', '=', 'k.id')
+                                    ->orderBy('km.tanggal', 'desc')
+                                    ->limit(8)
+                                    ->select('km.tanggal', 'g.nama as guru', 'k.nama_kelas', 'jm.mata_pelajaran', 'km.materi')
+                                    ->get();
+                            @endphp
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Guru</th>
+                                            <th>Kelas</th>
+                                            <th>Mapel</th>
+                                            <th>Materi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($kegiatanTerbaru as $kegiatan)
+                                        <tr>
+                                            <td>{{ date('d/m/Y', strtotime($kegiatan->tanggal)) }}</td>
+                                            <td>{{ $kegiatan->guru }}</td>
+                                            <td>{{ $kegiatan->nama_kelas }}</td>
+                                            <td>{{ $kegiatan->mata_pelajaran }}</td>
+                                            <td>
+                                                <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                                                    {{ $kegiatan->materi }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">Belum ada kegiatan</td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -411,62 +484,46 @@
                     <!-- Calendar -->
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h5 class="mb-0">Calendar</h5>
+                            <h5 class="mb-0">Kalender</h5>
                         </div>
                         <div class="card-body">
                             <div class="calendar-widget">
                                 <div class="calendar-header">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <button class="btn btn-sm btn-outline-secondary">
+                                        <button class="btn btn-sm btn-outline-secondary" id="prevMonth">
                                             <i class="bi bi-chevron-left"></i>
                                         </button>
-                                        <h6 class="mb-0">{{ date('F Y') }}</h6>
-                                        <button class="btn btn-sm btn-outline-secondary">
+                                        <h6 class="mb-0" id="currentMonth">{{ date('F Y') }}</h6>
+                                        <button class="btn btn-sm btn-outline-secondary" id="nextMonth">
                                             <i class="bi bi-chevron-right"></i>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="calendar-body">
                                     <div class="weekdays row text-center mb-2">
-                                        <div class="col p-1"><small>S</small></div>
                                         <div class="col p-1"><small>M</small></div>
-                                        <div class="col p-1"><small>T</small></div>
-                                        <div class="col p-1"><small>W</small></div>
-                                        <div class="col p-1"><small>T</small></div>
-                                        <div class="col p-1"><small>F</small></div>
+                                        <div class="col p-1"><small>S</small></div>
+                                        <div class="col p-1"><small>S</small></div>
+                                        <div class="col p-1"><small>R</small></div>
+                                        <div class="col p-1"><small>K</small></div>
+                                        <div class="col p-1"><small>J</small></div>
                                         <div class="col p-1"><small>S</small></div>
                                     </div>
-                                    <div class="days row">
-                                        @php
-                                            $firstDay = date('w', strtotime(date('Y-m-01')));
-                                            $daysInMonth = date('t');
-                                            $currentDay = date('j');
-                                        @endphp
-                                        
-                                        @for($i = 0; $i < $firstDay; $i++)
-                                            <div class="col p-1 text-center"></div>
-                                        @endfor
-                                        
-                                        @for($day = 1; $day <= $daysInMonth; $day++)
-                                            <div class="col p-1 text-center">
-                                                <div class="day {{ $day == $currentDay ? 'current-day' : '' }}">
-                                                    {{ $day }}
-                                                </div>
-                                            </div>
-                                        @endfor
+                                    <div class="days row" id="calendarDays">
+                                        <!-- Calendar akan diisi oleh JavaScript -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Aktivitas Terbaru -->
+                    <!-- Aktivitas Terbaru - DATA REAL -->
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0">Aktivitas Terbaru</h5>
                         </div>
                         <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                            @if($aktivitas->count() > 0)
+                            @if(isset($aktivitas) && $aktivitas->count() > 0)
                             <div class="timeline">
                                 @foreach($aktivitas as $index => $act)
                                 <div class="timeline-item">
@@ -477,28 +534,40 @@
                                     <div class="timeline-content">
                                         <div class="d-flex justify-content-between">
                                             <h6 class="mb-1">
-                                                @if(str_contains($act->aktivitas, 'Login'))
-                                                    <i class="bi bi-box-arrow-in-right text-success me-1"></i>
-                                                @elseif(str_contains($act->aktivitas, 'Logout'))
-                                                    <i class="bi bi-box-arrow-right text-danger me-1"></i>
-                                                @elseif(str_contains($act->aktivitas, 'Menambah'))
-                                                    <i class="bi bi-plus-circle text-primary me-1"></i>
-                                                @elseif(str_contains($act->aktivitas, 'Mengedit'))
-                                                    <i class="bi bi-pencil-square text-warning me-1"></i>
-                                                @elseif(str_contains($act->aktivitas, 'Menghapus'))
-                                                    <i class="bi bi-trash text-danger me-1"></i>
-                                                @else
-                                                    <i class="bi bi-info-circle text-secondary me-1"></i>
-                                                @endif
+                                                @php
+                                                    $icon = 'bi-info-circle';
+                                                    $color = 'secondary';
+                                                    
+                                                    if (str_contains($act->aktivitas, 'Login')) {
+                                                        $icon = 'bi-box-arrow-in-right';
+                                                        $color = 'success';
+                                                    } elseif (str_contains($act->aktivitas, 'Logout')) {
+                                                        $icon = 'bi-box-arrow-right';
+                                                        $color = 'danger';
+                                                    } elseif (str_contains($act->aktivitas, 'Menambah')) {
+                                                        $icon = 'bi-plus-circle';
+                                                        $color = 'primary';
+                                                    } elseif (str_contains($act->aktivitas, 'Mengedit')) {
+                                                        $icon = 'bi-pencil-square';
+                                                        $color = 'warning';
+                                                    } elseif (str_contains($act->aktivitas, 'Menghapus')) {
+                                                        $icon = 'bi-trash';
+                                                        $color = 'danger';
+                                                    }
+                                                @endphp
+                                                <i class="bi {{ $icon }} text-{{ $color }} me-1"></i>
                                                 {{ $act->username ?? 'System' }}
                                             </h6>
                                             <small class="text-muted">
-                                                {{ date('H:i', strtotime($act->created_at)) }}
+                                                {{ \Carbon\Carbon::parse($act->created_at)->format('H:i') }}
                                             </small>
                                         </div>
                                         <p class="mb-0 small text-muted">
                                             {{ $act->aktivitas }}
                                         </p>
+                                        <small class="text-muted">
+                                            {{ \Carbon\Carbon::parse($act->created_at)->format('d/m/Y') }}
+                                        </small>
                                     </div>
                                 </div>
                                 @endforeach
@@ -653,8 +722,8 @@ body {
 
 .stats-card-modern .card-header {
     background: transparent;
-    border-bottom: none;
-    padding: 20px 20px 0;
+    border-bottom: 3px solid;
+    padding: 20px 20px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -665,21 +734,29 @@ body {
     font-weight: 600;
     color: #495057;
     margin: 0;
+    font-size: 0.9rem;
 }
 
-.percentage {
+.number {
     font-size: 2rem;
     font-weight: 700;
     font-family: 'Montserrat', sans-serif;
 }
 
-.follows-card .percentage { color: var(--follows-color); }
-.views-card .percentage { color: var(--views-color); }
-.score-card .percentage { color: var(--score-color); }
-.subscriptions-card .percentage { color: var(--subscriptions-color); }
+.follows-card .card-header { border-color: var(--follows-color); }
+.follows-card .number { color: var(--follows-color); }
+
+.views-card .card-header { border-color: var(--views-color); }
+.views-card .number { color: var(--views-color); }
+
+.score-card .card-header { border-color: var(--score-color); }
+.score-card .number { color: var(--score-color); }
+
+.subscriptions-card .card-header { border-color: var(--subscriptions-color); }
+.subscriptions-card .number { color: var(--subscriptions-color); }
 
 .stats-card-modern .card-body {
-    padding: 20px;
+    padding: 15px 20px;
 }
 
 .stats-card-modern .card-text {
@@ -687,70 +764,27 @@ body {
     line-height: 1.5;
     color: #6c757d;
     font-family: 'Raleway', sans-serif;
+    margin-bottom: 0.5rem;
 }
 
 .stats-card-modern .card-footer {
     background: transparent;
     border-top: 1px solid #e9ecef;
-    padding: 15px 20px;
+    padding: 10px 20px;
     font-family: 'Raleway', sans-serif;
 }
 
-.stats-card-modern .card-footer small {
-    font-weight: 600;
+.stats-card-modern .card-footer a {
+    color: #4361ee;
+    font-weight: 500;
 }
 
-.progress {
-    height: 6px;
-    border-radius: 3px;
-    background-color: #e9ecef;
+.stats-card-modern .card-footer a:hover {
+    color: #3a0ca3;
 }
 
-.progress-bar {
-    border-radius: 3px;
-    transition: width 1.5s ease;
-}
-
-.follows-card .progress-bar { background: var(--follows-color); }
-.views-card .progress-bar { background: var(--views-color); }
-.score-card .progress-bar { background: var(--score-color); }
-.subscriptions-card .progress-bar { background: var(--subscriptions-color); }
-
-/* Circle Progress */
-.circle-progress {
-    width: 60px;
-    height: 60px;
-    position: relative;
-    border-radius: 50%;
-    background: conic-gradient(#4361ee var(--percentage, 0%), #e9ecef 0%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.circle-progress::before {
-    content: '';
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background: white;
-    border-radius: 50%;
-}
-
-.circle-progress-inner {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-}
-
-.circle-progress-inner span {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #495057;
-}
-
-/* Bar Chart */
-.bar-chart .bar-wrapper {
+/* Bar Chart Real */
+.bar-chart-real .bar-wrapper {
     height: 150px;
     display: flex;
     flex-direction: column;
@@ -758,64 +792,68 @@ body {
     align-items: center;
 }
 
-.bar-chart .bar {
-    width: 20px;
+.bar-chart-real .bar {
+    width: 30px;
+    min-height: 10px;
     background: linear-gradient(to top, #4361ee, #4cc9f0);
     border-radius: 10px 10px 0 0;
-    transition: height 1s ease;
-    margin-bottom: 5px;
-}
-
-.bar-chart .bar:hover {
-    opacity: 0.8;
-}
-
-/* Earning Chart */
-.earning-item {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(67, 97, 238, 0.1);
     transition: all 0.3s ease;
-}
-
-.earning-item:hover {
-    background: rgba(67, 97, 238, 0.2);
-    transform: scale(1.05);
-}
-
-.earning-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #4361ee;
     margin-bottom: 5px;
+}
+
+.bar-chart-real .bar:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
 }
 
 /* Calendar */
 .calendar-widget .weekdays {
     font-weight: 600;
     color: #495057;
+    background: #f8f9fa;
+    border-radius: 5px;
+    padding: 5px 0;
 }
 
 .calendar-widget .day {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    margin: 0 auto;
+    margin: 2px auto;
     font-size: 0.875rem;
     transition: all 0.2s ease;
     cursor: pointer;
+    font-weight: 500;
 }
 
 .calendar-widget .day:hover {
     background: rgba(67, 97, 238, 0.1);
+    color: #4361ee;
 }
 
 .calendar-widget .current-day {
     background: #4361ee;
     color: white;
+    box-shadow: 0 2px 5px rgba(67, 97, 238, 0.3);
+}
+
+.calendar-widget .has-event {
+    position: relative;
+}
+
+.calendar-widget .has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #f72585;
+    border-radius: 50%;
 }
 
 /* Timeline */
@@ -873,6 +911,18 @@ body {
     box-shadow: 0 0 15px rgba(255,255,255,0.5);
 }
 
+/* Table */
+.table th {
+    font-weight: 600;
+    color: #495057;
+    background: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(67, 97, 238, 0.05);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .sidebar-menu {
@@ -884,8 +934,12 @@ body {
         padding: 15px;
     }
     
-    .percentage {
+    .number {
         font-size: 1.5rem;
+    }
+    
+    .bar-chart-real .bar {
+        width: 20px;
     }
 }
 
@@ -905,11 +959,6 @@ body {
     animation: fadeInUp 0.6s ease;
 }
 
-.follows-card { animation-delay: 0.1s; }
-.views-card { animation-delay: 0.2s; }
-.score-card { animation-delay: 0.3s; }
-.subscriptions-card { animation-delay: 0.4s; }
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 5px;
@@ -928,28 +977,99 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
 }
+/* ======================== */
+/* SOLUSI PALING AMAN: Sticky dengan Fixed */
+/* ======================== */
+
+/* Navbar tetap fixed */
+.navbar-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    height: 60px;
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    box-shadow: 0 4px 20px rgba(67, 97, 238, 0.3);
+}
+
+/* Sidebar juga fixed */
+.sidebar-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    width: 16.6667%;
+    overflow-y: auto;
+    z-index: 1020;
+    background: white;
+    border-right: 1px solid #e9ecef;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+}
+
+/* Main content offset */
+.main-content {
+    margin-left: 16.6667%;
+    padding: 20px;
+    padding-top: 80px; /* Navbar + sedikit spacing */
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+/* Buat body bisa scroll penuh */
+body {
+    padding-top: 0;
+    margin: 0;
+    height: auto;
+}
+
+/* Responsive */
+@media (max-width: 1199.98px) {
+    .sidebar-menu {
+        width: 200px;
+    }
+    .main-content {
+        margin-left: 200px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .sidebar-menu {
+        width: 180px;
+    }
+    .main-content {
+        margin-left: 180px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .navbar-glow {
+        height: 56px;
+    }
+    
+    .sidebar-menu {
+        top: 56px;
+        width: 250px;
+        left: -100%;
+        transition: left 0.3s ease;
+    }
+    
+    .sidebar-menu.show {
+        left: 0;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding-top: 70px;
+    }
+}
 </style>
 @endsection
 
 @section('scripts')
 <script>
 $(document).ready(function() {
-    // Initialize circle progress
-    $('.circle-progress').each(function() {
-        const percentage = $(this).data('percentage');
-        $(this).css('--percentage', percentage * 3.6 + 'deg');
-    });
-
-    // Animate progress bars
-    $('.progress-bar').each(function() {
-        const width = $(this).attr('style').match(/width: (\d+)%/);
-        if (width) {
-            $(this).css('width', '0%').animate({
-                width: width[1] + '%'
-            }, 1500);
-        }
-    });
-
     // Update live time
     function updateTime() {
         const now = new Date();
@@ -970,6 +1090,75 @@ $(document).ready(function() {
     setInterval(updateTime, 1000);
     updateTime();
 
+    // Calendar functionality
+    let currentDate = new Date();
+    
+    function renderCalendar(date) {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const monthNames = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        
+        // Update month display
+        $('#currentMonth').text(monthNames[month] + ' ' + year);
+        
+        // Get first day of month
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1; // Adjust for Monday start
+        
+        // Clear previous days
+        $('#calendarDays').empty();
+        
+        // Add empty cells for days before first day of month
+        for (let i = 0; i < startingDay; i++) {
+            $('#calendarDays').append('<div class="col p-1 text-center"></div>');
+        }
+        
+        // Add days of the month
+        const today = new Date();
+        const isToday = (day) => {
+            return day === today.getDate() && 
+                   month === today.getMonth() && 
+                   year === today.getFullYear();
+        };
+        
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = $('<div class="col p-1 text-center"></div>');
+            const dayDiv = $('<div class="day"></div>').text(day);
+            
+            if (isToday(day)) {
+                dayDiv.addClass('current-day');
+            }
+            
+            // Check if there are events on this day (you can implement API call here)
+            // For now, we'll just add random events for demo
+            if (Math.random() > 0.7) {
+                dayDiv.addClass('has-event');
+            }
+            
+            dayElement.append(dayDiv);
+            $('#calendarDays').append(dayElement);
+        }
+    }
+    
+    // Initial calendar render
+    renderCalendar(currentDate);
+    
+    // Month navigation
+    $('#prevMonth').click(function() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate);
+    });
+    
+    $('#nextMonth').click(function() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate);
+    });
+    
     // Search functionality
     $('.search-input').on('keypress', function(e) {
         if (e.which === 13) {
@@ -980,17 +1169,52 @@ $(document).ready(function() {
             }
         }
     });
-
-    // Calendar navigation
-    $('.calendar-widget .btn').on('click', function() {
-        // Implement calendar navigation
-        alert('Calendar navigation would go here');
-    });
-
+    
     // Stats card click
     $('.stats-card-modern').on('click', function() {
-        const cardType = $(this).find('.card-header h6').text();
-        alert('Viewing details for: ' + cardType);
+        const cardTitle = $(this).find('.card-header h6').text().trim();
+        let redirectUrl = '/admin';
+        
+        switch(cardTitle) {
+            case 'TOTAL PENGGUNA':
+            case 'TOTAL GURU':
+                redirectUrl = '/admin/guru';
+                break;
+            case 'TOTAL SISWA':
+                redirectUrl = '/admin/siswa';
+                break;
+            case 'TOTAL KELAS':
+                redirectUrl = '/admin/kelas';
+                break;
+            case 'TOTAL JADWAL':
+                redirectUrl = '/admin/jadwal';
+                break;
+            case 'TOTAL KEGIATAN':
+                redirectUrl = '/admin/laporan/kegiatan';
+                break;
+        }
+        
+        window.location.href = redirectUrl;
+    });
+    
+    // Animate numbers
+    $('.number').each(function() {
+        const $this = $(this);
+        const finalValue = parseInt($this.text());
+        const duration = 1500;
+        const step = 20;
+        const increment = finalValue / (duration / step);
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= finalValue) {
+                $this.text(finalValue);
+                clearInterval(timer);
+            } else {
+                $this.text(Math.floor(current));
+            }
+        }, step);
     });
 });
 </script>

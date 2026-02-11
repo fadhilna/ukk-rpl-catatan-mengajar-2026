@@ -71,36 +71,31 @@
         </div>
     </div>
 </nav>
-                </div>
-                <div class="d-none d-lg-block">
-                    <button class="btn btn-gradient px-4" data-bs-toggle="modal" data-bs-target="#tambahKelas">
-                        <i class="bi bi-plus-circle me-2"></i>Tambah Kelas Baru
-                    </button>
-                </div>
+              <!-- Header Section -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h5 class="mb-0"><i class="bi bi-building me-2"></i>Manajemen Kelas</h5>
+        <small class="text-muted">Kelola data kelas sekolah</small>
+    </div>
+    <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal" data-bs-target="#tambahKelas">
+        <i class="bi bi-plus-circle me-2"></i>Tambah Kelas
+    </button>
+</div>
+
+<!-- Stats Card -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="text-muted mb-1">Total Kelas</h6>
+                <h3 class="mb-0">{{ $kelas->count() }}</h3>
             </div>
-        </div>
-        
-        <!-- Stats Cards -->
-        <div class="col-md-4">
-            <div class="stats-card animate__animated animate__fadeInRight">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-muted mb-1">Total Kelas</h6>
-                        <h3 class="fw-bold mb-0 text-primary">{{ $kelas->count() }}</h3>
-                    </div>
-                    <div class="bg-primary rounded-circle p-3">
-                        <i class="bi bi-building text-white fs-4"></i>
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <small class="text-muted">
-                        <i class="bi bi-info-circle me-1"></i> 
-                        Kelola data kelas sekolah
-                    </small>
-                </div>
+            <div class="bg-primary p-3 rounded">
+                <i class="bi bi-building text-white fs-5"></i>
             </div>
         </div>
     </div>
+</div>
     
     <!-- Main Content -->
     <div class="row">

@@ -76,6 +76,291 @@
             display: flex;
             min-height: 100vh;
         }
+        /* ======================== */
+/* STATISTIK BULANAN STYLING */
+/* ======================== */
+
+.consumption-chart {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 200px;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.chart-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px;
+}
+
+.chart-bar {
+    width: 40px;
+    background: linear-gradient(to top, #764ba2, #667eea);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    transition: height 0.5s ease;
+    box-shadow: 0 2px 5px rgba(118, 75, 162, 0.2);
+}
+
+.chart-bar:hover {
+    background: linear-gradient(to top, #667eea, #764ba2);
+    transform: scale(1.05);
+}
+
+.chart-value {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #764ba2;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    min-width: 25px;
+    text-align: center;
+}
+
+.chart-label {
+    margin-top: 10px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.chart-subtitle {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+/* Stat Summary */
+.stat-summary {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #764ba2;
+}
+
+.stat-summary h6 {
+    font-size: 0.9rem;
+    color: #495057;
+    margin-bottom: 10px;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #764ba2;
+    line-height: 1;
+}
+
+/* Trend Indicator */
+.trend-indicator {
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.trend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.trend-item.trend-up {
+    color: #28a745;
+}
+
+.trend-item.trend-down {
+    color: #dc3545;
+}
+
+.trend-item i {
+    font-size: 1.2rem;
+}
+
+/* Card Header dengan Dropdown */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Animation */
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .consumption-chart {
+        height: 150px;
+    }
+    
+    .chart-column {
+        width: 50px;
+    }
+    
+    .chart-bar {
+        width: 30px;
+    }
+    
+    .chart-value {
+        font-size: 0.7rem;
+        top: -20px;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+        /* ======================== */
+/* NAVBAR & SIDEBAR FIXED - TAMBAHAN SAJA */
+/* ======================== */
+
+/* Navbar Fixed */
+.navbar-glow {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1030 !important;
+    width: 100% !important;
+}
+
+/* Sidebar Fixed */
+.sidebar-menu {
+    position: fixed !important;
+    top: 60px !important;
+    left: 0 !important;
+    height: calc(100vh - 60px) !important;
+    overflow-y: auto !important;
+    z-index: 1020 !important;
+}
+
+/* Main Content Offset */
+.main-content {
+    margin-left: 16.6667% !important;
+    padding-top: 80px !important;
+    min-height: 100vh !important;
+}
+
+/* Untuk tablet */
+@media (max-width: 1199.98px) {
+    .sidebar-menu {
+        width: 25% !important;
+    }
+    .main-content {
+        margin-left: 25% !important;
+    }
+}
+
+/* Untuk mobile */
+@media (max-width: 767.98px) {
+    .navbar-glow {
+        height: 56px !important;
+    }
+    
+    .sidebar-menu {
+        top: 56px !important;
+        left: -100% !important;
+        width: 250px !important;
+        height: calc(100vh - 56px) !important;
+        transition: left 0.3s ease !important;
+        z-index: 1040 !important;
+    }
+    
+    .sidebar-menu.show {
+        left: 0 !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding-top: 70px !important;
+    }
+    
+    /* Hamburger menu */
+    .navbar-toggler {
+        display: block !important;
+        border: none !important;
+        background: transparent !important;
+        color: white !important;
+        font-size: 1.5rem !important;
+        padding: 5px 10px !important;
+    }
+}
+
+/* Navbar scroll effect */
+.navbar-scrolled {
+    background: rgba(67, 97, 238, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+/* Scroll progress */
+.scroll-progress {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 0% !important;
+    height: 3px !important;
+    background: linear-gradient(to right, #4361ee, #4cc9f0) !important;
+    z-index: 1031 !important;
+    transition: width 0.3s ease !important;
+}
+
+/* Sidebar overlay untuk mobile */
+.sidebar-overlay {
+    display: none !important;
+    position: fixed !important;
+    top: 60px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0,0,0,0.5) !important;
+    z-index: 1039 !important;
+}
+
+.sidebar-overlay.show {
+    display: block !important;
+}
 
         /* SIDEBAR - Desain mirip referensi */
         .sidebar {
@@ -732,9 +1017,259 @@
                 display: flex;
             }
         }
+        /* ======================== */
+/* NAVBAR SIMPLE - FIXED */
+/* ======================== */
+.navbar-simple {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-simple .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 20px;
+    max-width: 100%;
+}
+
+/* Logo */
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.navbar-logo img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Menu */
+.navbar-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-menu a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.navbar-menu a:hover,
+.navbar-menu a.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Profile */
+.navbar-profile {
+    position: relative;
+}
+
+.profile-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.profile-dropdown:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.avatar-circle {
+    width: 35px;
+    height: 35px;
+    background: white;
+    color: #4361ee;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Hamburger menu (mobile) */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Mobile Overlay */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+/* ======================== */
+/* SIDEBAR POSITION FIXED */
+/* ======================== */
+aside.sidebar {
+    position: fixed;
+    top: 60px; /* Mulai di bawah navbar */
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    z-index: 998;
+    transition: left 0.3s ease;
+}
+
+/* ======================== */
+/* MAIN CONTENT OFFSET */
+/* ======================== */
+.dashboard-container {
+    margin-left: 250px; /* Sama dengan lebar sidebar */
+    padding-top: 70px; /* Navbar height + spacing */
+    min-height: 100vh;
+}
+
+/* ======================== */
+/* RESPONSIVE */
+/* ======================== */
+@media (max-width: 991px) {
+    /* Sembunyikan menu di tablet */
+    .navbar-menu {
+        display: none;
+    }
+    
+    /* Tampilkan hamburger */
+    .menu-toggle {
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Navbar lebih kecil di mobile */
+    .navbar-simple {
+        height: 56px;
+    }
+    
+    /* Sidebar jadi slide-in di mobile */
+    aside.sidebar {
+        top: 56px;
+        left: -250px;
+        width: 250px;
+        height: calc(100vh - 56px);
+    }
+    
+    aside.sidebar.show {
+        left: 0;
+    }
+    
+    /* Main content full width di mobile */
+    .dashboard-container {
+        margin-left: 0;
+        width: 100%;
+        padding-top: 66px;
+    }
+    
+    /* Overlay untuk mobile */
+    .mobile-overlay.show {
+        display: block;
+    }
+    
+    /* Sembunyikan nama di profile di mobile */
+    .profile-dropdown span {
+        display: none;
+    }
+}
+
+/* Scroll effect */
+.navbar-scrolled {
+    background: rgba(67, 97, 238, 0.95) !important;
+    backdrop-filter: blur(10px);
+}
     </style>
 </head>
 <body>
+    <!-- NAVBAR SIMPLE - TAMBAHKAN INI -->
+<nav class="navbar-simple">
+    <div class="container">
+        <!-- Hamburger untuk mobile -->
+        <button class="menu-toggle" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        
+        <!-- Logo -->
+        <a href="/guru/dashboard" class="navbar-logo">
+            <img src="{{ asset('image-removebg-preview.png') }}" alt="Logo" width="30">
+            <span>Dashboard Guru</span>
+        </a>
+        
+        <!-- Menu -->
+        <div class="navbar-menu">
+            <a href="/guru/dashboard" class="{{ request()->is('guru/dashboard') ? 'active' : '' }}">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="/guru/kegiatan" class="{{ request()->is('guru/kegiatan*') ? 'active' : '' }}">
+                <i class="bi bi-journal-text"></i> Kegiatan
+            </a>
+            <a href="/guru/laporan-bulanan" class="{{ request()->is('guru/laporan*') ? 'active' : '' }}">
+                <i class="bi bi-file-earmark-bar-graph"></i> Laporan
+            </a>
+            <a href="/guru/jadwal" class="{{ request()->is('guru/jadwal') ? 'active' : '' }}">
+                <i class="bi bi-calendar-week"></i> Jadwal
+            </a>
+        </div>
+        
+        <!-- Profil -->
+        <div class="navbar-profile">
+            <div class="dropdown">
+                <a href="#" class="profile-dropdown" data-bs-toggle="dropdown">
+                    <div class="avatar-circle">
+                        {{ strtoupper(substr($guru->nama, 0, 1)) }}
+                    </div>
+                    <span>{{ $guru->nama }}</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/guru/profil"><i class="bi bi-person"></i> Profil</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- OVERLAY untuk mobile -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
     <!-- Dashboard Container -->
     <div class="dashboard-container">
         <!-- Sidebar -->
@@ -1042,31 +1577,153 @@
                 </div>
             </div>
 
-            <!-- Consumption Chart -->
-            <div class="schedule-card animate-fadeIn mb-4">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="bi bi-bar-chart-line" style="color: #764ba2;"></i>
-                        Statistik Bulanan
-                    </h3>
+         <!-- Statistik Bulanan - DATA REAL -->
+<div class="schedule-card animate-fadeIn mb-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="bi bi-bar-chart-line" style="color: #764ba2;"></i>
+            Statistik Kegiatan Bulanan
+        </h3>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                {{ date('F Y') }}
+            </button>
+            <ul class="dropdown-menu">
+                @php
+                    $months = [];
+                    for ($i = 0; $i < 6; $i++) {
+                        $months[] = date('F Y', strtotime("-$i months"));
+                    }
+                @endphp
+                @foreach($months as $month)
+                <li><a class="dropdown-item" href="#">{{ $month }}</a></li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        @php
+            // AMBIL DATA REAL dari database
+            $currentYear = date('Y');
+            $guruId = $guru->id ?? 0;
+            
+            // Query untuk statistik bulanan
+            $monthlyStats = DB::table('kegiatan_mengajar as km')
+                ->join('jadwal_mengajar as jm', 'km.jadwal_id', '=', 'jm.id')
+                ->select(
+                    DB::raw('MONTH(km.tanggal) as bulan'),
+                    DB::raw('COUNT(km.id) as total_kegiatan'),
+                    DB::raw('YEAR(km.tanggal) as tahun')
+                )
+                ->where('jm.guru_id', $guruId)
+                ->whereYear('km.tanggal', $currentYear)
+                ->groupBy('bulan', 'tahun')
+                ->orderBy('bulan')
+                ->get()
+                ->keyBy('bulan');
+            
+            // Nama bulan
+            $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
+            $currentMonth = date('n');
+            
+            // Siapkan data untuk chart
+            $chartData = [];
+            $maxKegiatan = 0;
+            
+            // Ambil 6 bulan terakhir
+            for ($i = 5; $i >= 0; $i--) {
+                $bulan = $currentMonth - $i;
+                $tahun = $currentYear;
+                
+                if ($bulan <= 0) {
+                    $bulan += 12;
+                    $tahun -= 1;
+                }
+                
+                $kegiatan = $monthlyStats[$bulan]->total_kegiatan ?? 0;
+                $chartData[] = [
+                    'bulan' => $bulan,
+                    'nama_bulan' => $monthNames[$bulan - 1],
+                    'kegiatan' => $kegiatan,
+                    'tahun' => $tahun
+                ];
+                
+                if ($kegiatan > $maxKegiatan) {
+                    $maxKegiatan = $kegiatan;
+                }
+            }
+            
+            // Normalisasi tinggi chart (jika ada data)
+            $maxHeight = $maxKegiatan > 0 ? $maxKegiatan : 1;
+        @endphp
+        
+        <div class="consumption-chart">
+            @foreach($chartData as $data)
+            <div class="chart-column">
+                <div class="chart-bar" style="height: {{ ($data['kegiatan'] / $maxHeight) * 100 }}%;">
+                    <div class="chart-value">{{ $data['kegiatan'] }}</div>
                 </div>
-                <div class="card-body">
-                    <div class="consumption-chart">
-                        <div class="chart-bar" style="height: 60%;">
-                            <div class="chart-label">Jun</div>
-                        </div>
-                        <div class="chart-bar" style="height: 80%;">
-                            <div class="chart-label">Jul</div>
-                        </div>
-                        <div class="chart-bar" style="height: 90%;">
-                            <div class="chart-label">Agt</div>
-                        </div>
-                        <div class="chart-bar" style="height: 75%;">
-                            <div class="chart-label">Sep</div>
-                        </div>
-                    </div>
+                <div class="chart-label">{{ $data['nama_bulan'] }}</div>
+                <div class="chart-subtitle">{{ $data['tahun'] }}</div>
+            </div>
+            @endforeach
+        </div>
+        
+        <!-- Legenda dan Statistik -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="stat-summary">
+                    <h6><i class="bi bi-info-circle text-primary"></i> Total Kegiatan Tahun {{ $currentYear }}</h6>
+                    @php
+                        $totalYear = DB::table('kegiatan_mengajar as km')
+                            ->join('jadwal_mengajar as jm', 'km.jadwal_id', '=', 'jm.id')
+                            ->where('jm.guru_id', $guruId)
+                            ->whereYear('km.tanggal', $currentYear)
+                            ->count();
+                    @endphp
+                    <div class="stat-number">{{ $totalYear }}</div>
+                    <small class="text-muted">kegiatan tercatat</small>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="stat-summary">
+                    <h6><i class="bi bi-graph-up-arrow text-success"></i> Rata-rata per Bulan</h6>
+                    <div class="stat-number">{{ $totalYear > 0 ? round($totalYear / ($currentMonth > 0 ? $currentMonth : 1), 1) : 0 }}</div>
+                    <small class="text-muted">kegiatan/bulan</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tren -->
+        <div class="trend-indicator mt-3">
+            @php
+                // Hitung tren bulan ini vs bulan lalu
+                $bulanIni = $monthlyStats[$currentMonth]->total_kegiatan ?? 0;
+                $bulanLalu = $currentMonth > 1 ? ($monthlyStats[$currentMonth - 1]->total_kegiatan ?? 0) : 0;
+                
+                if ($bulanLalu > 0) {
+                    $persentase = (($bulanIni - $bulanLalu) / $bulanLalu) * 100;
+                    $trendClass = $persentase >= 0 ? 'trend-up' : 'trend-down';
+                    $trendIcon = $persentase >= 0 ? 'bi-arrow-up' : 'bi-arrow-down';
+                } else {
+                    $persentase = $bulanIni > 0 ? 100 : 0;
+                    $trendClass = 'trend-up';
+                    $trendIcon = 'bi-arrow-up';
+                }
+            @endphp
+            
+            <div class="trend-item {{ $trendClass }}">
+                <i class="bi {{ $trendIcon }}"></i>
+                <span>Tren Bulan {{ $monthNames[$currentMonth - 1] }}: 
+                    <strong>{{ $bulanIni }} kegiatan</strong>
+                    @if($bulanLalu > 0)
+                    ({{ $persentase >= 0 ? '+' : '' }}{{ round($persentase, 1) }}% dari bulan lalu)
+                    @endif
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 
             <!-- Footer -->
             <div class="dashboard-footer animate-fadeIn">
@@ -1236,6 +1893,36 @@
         updateClock();
         setInterval(updateClock, 60000);
     });
+    $(document).ready(function() {
+    // Toggle sidebar di mobile
+    $('#menuToggle').click(function() {
+        $('aside.sidebar').toggleClass('show');
+        $('#mobileOverlay').toggleClass('show');
+    });
+    
+    // Close sidebar ketika klik overlay
+    $('#mobileOverlay').click(function() {
+        $(this).removeClass('show');
+        $('aside.sidebar').removeClass('show');
+    });
+    
+    // Navbar scroll effect
+    $(window).scroll(function() {
+        if ($(window).scrollTop() > 20) {
+            $('.navbar-simple').addClass('navbar-scrolled');
+        } else {
+            $('.navbar-simple').removeClass('navbar-scrolled');
+        }
+    });
+    
+    // Close sidebar ketika klik link di sidebar (mobile)
+    $('.sidebar-nav a').click(function() {
+        if ($(window).width() <= 768) {
+            $('aside.sidebar').removeClass('show');
+            $('#mobileOverlay').removeClass('show');
+        }
+    });
+});
     </script>
 </body>
 </html>
